@@ -50,3 +50,9 @@ export const rolesTableColumnDefs = [
   //   sortable: false,
   // },
 ];
+
+export const localStorageKeys = {
+  authToken: 'AccessToken',
+  userObj: 'user',
+  userId: 'userId',
+};

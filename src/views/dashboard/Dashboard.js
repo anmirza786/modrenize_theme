@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Typography } from '@mui/material';
 import PageContainer from 'src/components/container/PageContainer';
+import { localStorageKeys } from 'src/utils/helpers';
 
 // components
 
 const Dashboard = () => {
   const [user, setUser] = useState(null);
   useEffect(() => {
-    const localUser = localStorage.getItem('CRM3User');
+    const localUser = localStorage.getItem(localStorageKeys.userObj);
     setUser(JSON.parse(localUser));
   }, []);
   return (

@@ -1,12 +1,13 @@
 import axios from 'axios';
 import { get } from 'lodash';
+import { localStorageKeys } from './helpers';
 
 const axiosInstance = axios.create();
 axiosInstance.defaults.baseURL = process.env.REACT_APP_API_URL;
 
 axiosInstance.interceptors.request.use(
   (axiosConfig) => {
-    const authToken = localStorage.getItem('CRM3Token');
+    const authToken = localStorage.getItem(localStorageKeys.authToken);
     if (authToken) {
       axiosConfig.headers['Authorization'] = `Token ${authToken}`;
     }

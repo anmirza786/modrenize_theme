@@ -1,6 +1,7 @@
 import React, { lazy } from 'react';
 import { Navigate } from 'react-router-dom';
 import Loadable from '../layouts/full/shared/loadable/Loadable';
+import AuthGuard from 'src/components/guards/AuthGuard';
 
 /* ***Layouts**** */
 const FullLayout = Loadable(lazy(() => import('../layouts/full/FullLayout')));
@@ -22,7 +23,11 @@ const ConfirmPassword = Loadable(lazy(() => import('../views/authentication/Conf
 const Router = [
   {
     path: '/',
-    element: <FullLayout />,
+    element: (
+      <AuthGuard>
+        <FullLayout />
+      </AuthGuard>
+    ),
     children: [
       { path: '/', element: <Navigate to="/dashboard" /> },
       { path: '/dashboard', exact: true, element: <Dashboard /> },

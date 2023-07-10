@@ -6,6 +6,7 @@ import { LoadingButton } from '@mui/lab';
 import { useNavigate } from 'react-router';
 import { useSelector } from 'react-redux';
 import { confirmOTP } from '../AuthHelpers';
+import { localStorageKeys } from 'src/utils/helpers';
 
 const AuthOTPConfirmation = ({ title, subtitle, subtext, infotext }) => {
   const [loading, setLoading] = useState(false);
@@ -15,7 +16,7 @@ const AuthOTPConfirmation = ({ title, subtitle, subtext, infotext }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const body = {
-      user_id: localStorage.getItem('userId') || userID,
+      user_id: localStorage.getItem(localStorageKeys.userId) || userID,
       code: OTP,
     };
     setLoading(true);

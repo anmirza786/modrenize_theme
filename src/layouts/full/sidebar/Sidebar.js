@@ -1,11 +1,18 @@
 import { useMediaQuery, Box, Drawer, Divider, Typography } from '@mui/material';
 import SidebarItems from './SidebarItems';
 import SidebarLogo from './sidebarLogo';
+import { logout } from 'src/views/authentication/AuthHelpers';
+import { useNavigate } from 'react-router';
 const Sidebar = (props) => {
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
-
+  const navigate = useNavigate();
   const sidebarWidth = '270px';
-
+  const handleLogout = async () => {
+    const response = await logout();
+    if (response) {
+      navigate('/auth/login');
+    }
+  };
   if (lgUp) {
     return (
       <Box
@@ -56,7 +63,7 @@ const Sidebar = (props) => {
               alignItems="center"
               px={4}
               py={5}
-              // onClick={async () => await handleLogout()}
+              onClick={async () => await handleLogout()}
             >
               <Box
                 component="img"

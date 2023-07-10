@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   Avatar,
   Box,
@@ -8,20 +8,28 @@ import {
   IconButton,
   MenuItem,
   ListItemIcon,
-  ListItemText
+  ListItemText,
 } from '@mui/material';
 
-import { IconListCheck, IconMail, IconUser } from '@tabler/icons';
+import { IconUser } from '@tabler/icons';
 
 import ProfileImg from 'src/assets/images/profile/user-1.jpg';
+import { logout } from 'src/views/authentication/AuthHelpers';
 
 const Profile = () => {
+  const navigate = useNavigate();
   const [anchorEl2, setAnchorEl2] = useState(null);
   const handleClick2 = (event) => {
     setAnchorEl2(event.currentTarget);
   };
   const handleClose2 = () => {
     setAnchorEl2(null);
+  };
+  const handleLogout = async () => {
+    const response = await logout();
+    if (response) {
+      navigate('/auth/login');
+    }
   };
 
   return (
@@ -65,13 +73,13 @@ const Profile = () => {
           },
         }}
       >
-        <MenuItem>
+        <MenuItem component={Link} to="/">
           <ListItemIcon>
             <IconUser width={20} />
           </ListItemIcon>
           <ListItemText>My Profile</ListItemText>
         </MenuItem>
-        <MenuItem>
+        {/* <MenuItem>
           <ListItemIcon>
             <IconMail width={20} />
           </ListItemIcon>
@@ -82,9 +90,9 @@ const Profile = () => {
             <IconListCheck width={20} />
           </ListItemIcon>
           <ListItemText>My Tasks</ListItemText>
-        </MenuItem>
+        </MenuItem> */}
         <Box mt={1} py={1} px={2}>
-          <Button to="/auth/login" variant="outlined" color="primary" component={Link} fullWidth>
+          <Button onClick={handleLogout} variant="outlined" color="primary" fullWidth>
             Logout
           </Button>
         </Box>
