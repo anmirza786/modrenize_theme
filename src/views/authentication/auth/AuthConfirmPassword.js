@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Box, Typography, Button, Stack } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Box, Typography, Stack } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
+import { Link, useNavigate } from 'react-router-dom';
 import '../styles.css';
 // import useSelector
 // import { confirmOTP } from './AuthHelpers';
@@ -9,6 +10,7 @@ import CustomTextField from '../../../components/forms/theme-elements/CustomText
 
 const AuthConfirmPassword = ({ subtext, token, infotext }) => {
   // const route = useRouter();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -17,15 +19,16 @@ const AuthConfirmPassword = ({ subtext, token, infotext }) => {
       token,
       password,
     };
+    console.log(body);
     setLoading(true);
     try {
       // const response = await resetPasswordConfirm(body);
       // if (response) {
-      //   route.push('/authentication/login');
+      //   navigate('/authentication/login');
       // }
     } catch (e) {
     } finally {
-      setLoading(false);
+      // setLoading(false);
     }
   };
   return (
@@ -53,18 +56,19 @@ const AuthConfirmPassword = ({ subtext, token, infotext }) => {
           />
         </Box>
       </Stack>
+
       <Box>
-        <Button
+        <LoadingButton
           color="primary"
           variant="contained"
           size="large"
           fullWidth
-          // component={Link}
-          // href="/"
+          loading={loading}
+          loadingIndicator="Submitting..."
           type="submit"
         >
           Change Password
-        </Button>
+        </LoadingButton>
       </Box>
     </Box>
   );

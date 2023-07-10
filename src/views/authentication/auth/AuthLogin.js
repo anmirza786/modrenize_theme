@@ -1,16 +1,9 @@
 import React, { useState } from 'react';
-import {
-  Box,
-  Typography,
-  FormGroup,
-  FormControlLabel,
-  Button,
-  Stack,
-  Checkbox,
-} from '@mui/material';
+import { Box, Typography, FormGroup, FormControlLabel, Stack, Checkbox } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 import CustomTextField from '../../../components/forms/theme-elements/CustomTextField';
+import { LoadingButton } from '@mui/lab';
 
 const AuthLogin = ({ title, subtitle, subtext, infotext }) => {
   //   const dispatch: any = useDispatch();
@@ -96,16 +89,17 @@ const AuthLogin = ({ title, subtitle, subtext, infotext }) => {
         </Stack>
       </Stack>
       <Box>
-        <Button
+        <LoadingButton
           color="primary"
           variant="contained"
           size="large"
           fullWidth
-          disabled={loading}
+          loading={loading}
+          loadingIndicator="Submitting..."
           type="submit"
         >
           Log In
-        </Button>
+        </LoadingButton>
       </Box>
       {subtitle}
     </Box>

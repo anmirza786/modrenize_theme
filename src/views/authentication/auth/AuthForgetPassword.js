@@ -1,16 +1,9 @@
 import React, { useState } from 'react';
-import {
-  Box,
-  Typography,
-  FormGroup,
-  FormControlLabel,
-  Button,
-  Stack,
-  Checkbox,
-} from '@mui/material';
+import { Box, Typography, Stack } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 import CustomTextField from '../../../components/forms/theme-elements/CustomTextField';
+import { LoadingButton } from '@mui/lab';
 
 const AuthForgetPassword = ({ title, subtitle, subtext, infotext }) => {
   const [loading, setLoading] = useState(false);
@@ -50,19 +43,34 @@ const AuthForgetPassword = ({ title, subtitle, subtext, infotext }) => {
           <CustomTextField variant="outlined" id="email" name="email" type="eamil" fullWidth />
         </Box>
       </Stack>
+      <Stack justifyContent="space-between" direction="row" alignItems="center" my={2}>
+        <Typography fontWeight="500">Remember the password?</Typography>
+        <Typography
+          component={Link}
+          to="/auth/login"
+          fontWeight="500"
+          sx={{
+            textDecoration: 'none',
+            color: 'primary.main',
+            cursor: 'pointer',
+            zIndex: '10000',
+          }}
+        >
+          Login!
+        </Typography>
+      </Stack>
       <Box>
-        <Button
+        <LoadingButton
           color="primary"
           variant="contained"
           size="large"
           fullWidth
-          // component={Link}
-          disabled={loading}
-          // href="/"
+          loading={loading}
+          loadingIndicator="Submitting..."
           type="submit"
         >
           Request Password Change
-        </Button>
+        </LoadingButton>
       </Box>
       {subtitle}
     </Box>

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Box, Typography, Button, Stack } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Box, Typography, Stack } from '@mui/material';
 import OTPInput from 'react-otp-input';
 import '../styles.css';
+import { LoadingButton } from '@mui/lab';
+import { useNavigate } from 'react-router';
 // import useSelector
 // import { confirmOTP } from './AuthHelpers';
 // import { useRouter } from 'next/navigation';
@@ -12,9 +13,7 @@ const AuthOTPConfirmation = ({ title, subtitle, subtext, infotext }) => {
   const [OTP, setOTP] = useState('');
   // const userID = useSelector((state) => state.User.userId);
   // const route = useRouter();
-  const handleChange = (OTP) => {
-    setOTP(OTP);
-  };
+  const navigate = useNavigate();
   const handleSubmit = async (event) => {
     event.preventDefault();
     const body = {
@@ -24,7 +23,7 @@ const AuthOTPConfirmation = ({ title, subtitle, subtext, infotext }) => {
     setLoading(true);
     try {
       // await confirmOTP(body);
-      // route.push('/');
+      // navigate('/');
     } catch (e) {
     } finally {
       setLoading(false);
@@ -57,18 +56,17 @@ const AuthOTPConfirmation = ({ title, subtitle, subtext, infotext }) => {
         </Box>
       </Stack>
       <Box>
-        <Button
+        <LoadingButton
           color="primary"
           variant="contained"
           size="large"
           fullWidth
-          // component={Link}
-          // href="/"
-          disabled={loading}
+          loading={loading}
+          loadingIndicator="Submitting..."
           type="submit"
         >
           Verify
-        </Button>
+        </LoadingButton>
       </Box>
       {subtitle}
     </Box>
