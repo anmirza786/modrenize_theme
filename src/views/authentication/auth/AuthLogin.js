@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Box, Typography, FormGroup, FormControlLabel, Stack, Checkbox } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import CustomTextField from '../../../components/forms/theme-elements/CustomTextField';
 import { LoadingButton } from '@mui/lab';
+import { login } from '../AuthHelpers';
 
 const AuthLogin = ({ title, subtitle, subtext, infotext }) => {
-  //   const dispatch: any = useDispatch();
-  //   const route = useRouter();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -20,10 +20,10 @@ const AuthLogin = ({ title, subtitle, subtext, infotext }) => {
     };
     setLoading(true);
     try {
-      //   const response: any = await login(body);
-      //   if (response) {
-      //     route.push('/authentication/otp-confirmation');
-      //   }
+      const response = await login(body);
+      if (response) {
+        navigate('/auth/otp-confirmation');
+      }
     } catch (error) {
     } finally {
       setLoading(false);

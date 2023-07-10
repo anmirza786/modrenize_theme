@@ -4,26 +4,26 @@ import OTPInput from 'react-otp-input';
 import '../styles.css';
 import { LoadingButton } from '@mui/lab';
 import { useNavigate } from 'react-router';
-// import useSelector
-// import { confirmOTP } from './AuthHelpers';
-// import { useRouter } from 'next/navigation';
+import { useSelector } from 'react-redux';
+import { confirmOTP } from '../AuthHelpers';
 
 const AuthOTPConfirmation = ({ title, subtitle, subtext, infotext }) => {
   const [loading, setLoading] = useState(false);
   const [OTP, setOTP] = useState('');
-  // const userID = useSelector((state) => state.User.userId);
-  // const route = useRouter();
+  const userID = useSelector((state) => state.User.userId);
   const navigate = useNavigate();
   const handleSubmit = async (event) => {
     event.preventDefault();
     const body = {
-      user_id: localStorage.getItem('userId'),
+      user_id: localStorage.getItem('userId') || userID,
       code: OTP,
     };
     setLoading(true);
     try {
-      // await confirmOTP(body);
-      // navigate('/');
+      const resp = await confirmOTP(body);
+      if (resp) {
+        navigate('/');
+      }
     } catch (e) {
     } finally {
       setLoading(false);
@@ -41,7 +41,7 @@ const AuthOTPConfirmation = ({ title, subtitle, subtext, infotext }) => {
       {infotext}
 
       <Stack pt={3} pb={4}>
-        <Box sx={{ zIndex: 100000 }}>
+        <Box sx={{ zIndex: 10 }}>
           <OTPInput
             value={OTP}
             onChange={setOTP}

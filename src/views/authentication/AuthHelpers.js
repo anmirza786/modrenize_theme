@@ -1,6 +1,6 @@
-import axios from '@/utils/axios';
-import { getState, dispatch } from '@/redux/store';
-import { setUser, setUserId } from '@/redux/slices/users';
+import axios from '../../utils/axios';
+import { dispatch } from '../../redux/store';
+import { setUser, setUserId } from '../../redux/slices/users';
 import { errorToast, successToast } from '../../components/toasts';
 
 export const login = async (body) => {
@@ -17,7 +17,7 @@ export const login = async (body) => {
     }
   } catch (error) {
     errorToast(error.message);
-    return null;
+    return false;
   }
 };
 
@@ -36,7 +36,7 @@ export const confirmOTP = async (body) => {
     }
   } catch (error) {
     errorToast(error.message);
-    return null;
+    return false;
   }
 };
 
@@ -51,7 +51,7 @@ export const logout = async () => {
     errorToast(error.message);
     localStorage.removeItem('CRM3Token');
     localStorage.removeItem('CRM3User');
-    return null;
+    return false;
   }
 };
 
@@ -67,7 +67,7 @@ export const resetPasswordRequest = async (body) => {
     }
   } catch (error) {
     errorToast(error.message);
-    return null;
+    return false;
   }
 };
 
@@ -83,6 +83,6 @@ export const resetPasswordConfirm = async (body) => {
     }
   } catch (error) {
     errorToast(error.message);
-    return null;
+    return false;
   }
 };

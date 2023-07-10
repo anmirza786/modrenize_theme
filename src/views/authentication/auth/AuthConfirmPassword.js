@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
 import { Box, Typography, Stack } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import '../styles.css';
-// import useSelector
-// import { confirmOTP } from './AuthHelpers';
 import CustomTextField from '../../../components/forms/theme-elements/CustomTextField';
-// import { useRouter } from 'next/navigation';
+import { resetPasswordConfirm } from '../AuthHelpers';
 
 const AuthConfirmPassword = ({ subtext, token, infotext }) => {
-  // const route = useRouter();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const handleSubmit = async (event) => {
@@ -19,16 +16,15 @@ const AuthConfirmPassword = ({ subtext, token, infotext }) => {
       token,
       password,
     };
-    console.log(body);
     setLoading(true);
     try {
-      // const response = await resetPasswordConfirm(body);
-      // if (response) {
-      //   navigate('/authentication/login');
-      // }
+      const response = await resetPasswordConfirm(body);
+      if (response) {
+        navigate('/auth/login');
+      }
     } catch (e) {
     } finally {
-      // setLoading(false);
+      setLoading(false);
     }
   };
   return (

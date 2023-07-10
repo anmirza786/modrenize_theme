@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Box, Typography, Stack } from '@mui/material';
 import { Link } from 'react-router-dom';
-
 import CustomTextField from '../../../components/forms/theme-elements/CustomTextField';
 import { LoadingButton } from '@mui/lab';
+import { resetPasswordRequest } from '../AuthHelpers';
 
 const AuthForgetPassword = ({ title, subtitle, subtext, infotext }) => {
   const [loading, setLoading] = useState(false);
@@ -12,7 +12,7 @@ const AuthForgetPassword = ({ title, subtitle, subtext, infotext }) => {
     const email = event.target.email.value;
     setLoading(true);
     try {
-      // await resetPasswordRequest({ email });
+      await resetPasswordRequest({ email });
     } catch (e) {
     } finally {
       setLoading(false);
@@ -29,7 +29,7 @@ const AuthForgetPassword = ({ title, subtitle, subtext, infotext }) => {
       {subtext}
       {infotext}
 
-      <Stack pt={3} pb={4}>
+      <Stack pt={3} pb={1}>
         <Box>
           <Typography
             variant="subtitle1"
