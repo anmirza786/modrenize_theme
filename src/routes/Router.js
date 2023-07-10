@@ -2,6 +2,7 @@ import React, { lazy } from 'react';
 import { Navigate } from 'react-router-dom';
 import Loadable from '../layouts/full/shared/loadable/Loadable';
 import AuthGuard from 'src/components/guards/AuthGuard';
+import RoleListing from 'src/views/settings/RoleListing';
 
 /* ***Layouts**** */
 const FullLayout = Loadable(lazy(() => import('../layouts/full/FullLayout')));
@@ -38,6 +39,7 @@ const Router = [
       { path: '/ui/shadow', exact: true, element: <Shadow /> },
       { path: '*', element: <Navigate to="/auth/404" /> },
       { path: '/settings', exact: true, element: <Settings /> },
+      { path: '/settings/role-listing', exact: true, element: <RoleListing /> },
     ],
   },
   {

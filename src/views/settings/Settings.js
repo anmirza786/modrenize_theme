@@ -11,7 +11,7 @@ import { Box, Divider } from '@mui/material';
 import PageContainer from 'src/components/container/PageContainer';
 
 const Settings = () => {
-  const [user, setUser] = useState (null);
+  const [user, setUser] = useState(null);
   useEffect(() => {
     const localUser = localStorage.getItem('CRM3User');
     setUser(JSON.parse(localUser));
@@ -45,44 +45,44 @@ const Settings = () => {
         </ListItem>
         <Divider sx={{ borderBottomWidth: '1.5px' }} />
         {/* {user?.role?.id === 1 && ( */}
-          <>
-            <ListItem
-              component="a"
-              href="/settings/user-listing"
-              secondaryAction={
-                <IconButton edge="end" sx={{ color: '#000000' }}>
-                  <NavigateNextOutlinedIcon />
-                </IconButton>
-              }
-              sx={{ py: 3 }}
-            >
-              <ListItemIcon>
-                <PersonAddAltOutlinedIcon style={{ fontSize: '40px', color: '#000000' }} />
-              </ListItemIcon>
-              <Typography variant="h5" component="h5" sx={{ color: '#000000' }}>
-                Users
-              </Typography>
-            </ListItem>
-            <Divider sx={{ borderBottomWidth: '1.5px' }} />
-            <ListItem
-              component="a"
-              href="/settings/roles"
-              secondaryAction={
-                <IconButton edge="end" sx={{ color: '#000000' }}>
-                  <NavigateNextOutlinedIcon />
-                </IconButton>
-              }
-              sx={{ py: 3 }}
-            >
-              <ListItemIcon>
-                <Box component="img" src="/roles.svg" alt="logo" height={36} width={36} priority />
-              </ListItemIcon>
-              <Typography variant="h5" component="h5" sx={{ color: '#000000' }}>
-                Roles
-              </Typography>
-            </ListItem>
-            <Divider sx={{ borderBottomWidth: '1.5px' }} />
-          </>
+        <>
+          <ListItem
+            component="a"
+            href="/settings/user-listing"
+            secondaryAction={
+              <IconButton edge="end" sx={{ color: '#000000' }}>
+                <NavigateNextOutlinedIcon />
+              </IconButton>
+            }
+            sx={{ py: 3 }}
+          >
+            <ListItemIcon>
+              <PersonAddAltOutlinedIcon style={{ fontSize: '40px', color: '#000000' }} />
+            </ListItemIcon>
+            <Typography variant="h5" component="h5" sx={{ color: '#000000' }}>
+              Users
+            </Typography>
+          </ListItem>
+          <Divider sx={{ borderBottomWidth: '1.5px' }} />
+          <ListItem
+            component="a"
+            href="/settings/role-listing"
+            secondaryAction={
+              <IconButton edge="end" sx={{ color: '#000000' }}>
+                <NavigateNextOutlinedIcon />
+              </IconButton>
+            }
+            sx={{ py: 3 }}
+          >
+            <ListItemIcon>
+              <Box component="img" src="/roles.svg" alt="logo" height={36} width={36} priority />
+            </ListItemIcon>
+            <Typography variant="h5" component="h5" sx={{ color: '#000000' }}>
+              Roles
+            </Typography>
+          </ListItem>
+          <Divider sx={{ borderBottomWidth: '1.5px' }} />
+        </>
         {/* )} */}
       </List>
     </PageContainer>
