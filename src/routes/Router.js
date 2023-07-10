@@ -7,11 +7,12 @@ const FullLayout = Loadable(lazy(() => import('../layouts/full/FullLayout')));
 const BlankLayout = Loadable(lazy(() => import('../layouts/blank/BlankLayout')));
 
 /* ****Pages***** */
-const Dashboard = Loadable(lazy(() => import('../views/dashboard/Dashboard')))
-const SamplePage = Loadable(lazy(() => import('../views/sample-page/SamplePage')))
-const Icons = Loadable(lazy(() => import('../views/icons/Icons')))
-const TypographyPage = Loadable(lazy(() => import('../views/utilities/TypographyPage')))
-const Shadow = Loadable(lazy(() => import('../views/utilities/Shadow')))
+const Dashboard = Loadable(lazy(() => import('../views/dashboard/Dashboard')));
+const Settings = Loadable(lazy(() => import('../views/settings/Settings')));
+const SamplePage = Loadable(lazy(() => import('../views/sample-page/SamplePage')));
+const Icons = Loadable(lazy(() => import('../views/icons/Icons')));
+const TypographyPage = Loadable(lazy(() => import('../views/utilities/TypographyPage')));
+const Shadow = Loadable(lazy(() => import('../views/utilities/Shadow')));
 const Error = Loadable(lazy(() => import('../views/authentication/Error')));
 const Register = Loadable(lazy(() => import('../views/authentication/Register')));
 const Login = Loadable(lazy(() => import('../views/authentication/Login')));
@@ -28,6 +29,7 @@ const Router = [
       { path: '/ui/typography', exact: true, element: <TypographyPage /> },
       { path: '/ui/shadow', exact: true, element: <Shadow /> },
       { path: '*', element: <Navigate to="/auth/404" /> },
+      { path: '/settings', exact: true, element: <Settings /> },
     ],
   },
   {
