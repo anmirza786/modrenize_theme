@@ -16,6 +16,9 @@ const Shadow = Loadable(lazy(() => import('../views/utilities/Shadow')));
 const Error = Loadable(lazy(() => import('../views/authentication/Error')));
 const Register = Loadable(lazy(() => import('../views/authentication/Register')));
 const Login = Loadable(lazy(() => import('../views/authentication/Login')));
+const OTPConfirmation = Loadable(lazy(() => import('../views/authentication/OTPConfirmation')));
+const ForgetPassword = Loadable(lazy(() => import('../views/authentication/ForgetPasswordPage')));
+const ConfirmPassword = Loadable(lazy(() => import('../views/authentication/ConfirmPassword')));
 
 const Router = [
   {
@@ -37,8 +40,11 @@ const Router = [
     element: <BlankLayout />,
     children: [
       { path: '404', element: <Error /> },
-      { path: '/auth/register', element: <Register /> },
+      // { path: '/auth/register', element: <Register /> },
       { path: '/auth/login', element: <Login /> },
+      { path: '/auth/otp-confirmation', element: <OTPConfirmation /> },
+      { path: '/auth/confirm-password', element: <ConfirmPassword /> },
+      { path: '/auth/forget-password', element: <ForgetPassword /> },
       { path: '*', element: <Navigate to="/auth/404" /> },
     ],
   },
