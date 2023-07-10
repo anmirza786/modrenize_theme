@@ -1,8 +1,8 @@
-import { useMediaQuery, Box, Drawer } from '@mui/material';
+import { useMediaQuery, Box, Drawer, Divider, Typography } from '@mui/material';
 import Logo from '../shared/logo/Logo';
 import SidebarItems from './SidebarItems';
 import { Upgrade } from './Updrade';
-
+import SidebarLogo from './sidebarLogo'
 const Sidebar = (props) => {
 
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up("lg"));
@@ -42,17 +42,48 @@ const Sidebar = (props) => {
             {/* ------------------------------------------- */}
             {/* Logo */}
             {/* ------------------------------------------- */}
-            <Box px={3}>
-              <Logo />
+            <Box px={8} py={1}>
+              <SidebarLogo />
             </Box>
             <Box>
               {/* ------------------------------------------- */}
               {/* Sidebar Items */}
               {/* ------------------------------------------- */}
               <SidebarItems />
-              <Upgrade />
             </Box>
-            
+          </Box>
+          <Box>
+            <Divider />
+            <Box
+              display={"flex"}
+              alignItems="center"
+              px={4}
+              py={5}
+              // onClick={async () => await handleLogout()}
+            >
+              <Box
+                component="img"
+                src="/logoutIcon.svg"
+                alt="logout"
+                height={15.6}
+                width={15.6}
+                style={{
+                  marginTop: "2px",
+                }}
+              />
+              <Typography
+                variant="h6"
+                component="h6"
+                sx={{
+                  color: "#8E8EA9",
+                  mt: "2px",
+                  ml: "4px",
+                  cursor: "pointer",
+                }}
+              >
+                Logout
+              </Typography>
+            </Box>
           </Box>
         </Drawer>
       </Box>
@@ -75,14 +106,47 @@ const Sidebar = (props) => {
       {/* ------------------------------------------- */}
       {/* Logo */}
       {/* ------------------------------------------- */}
-      <Box px={2}>
-        <Logo />
+      <Box px={8}>
+      <SidebarLogo />
       </Box>
       {/* ------------------------------------------- */}
       {/* Sidebar For Mobile */}
       {/* ------------------------------------------- */}
       <SidebarItems />
-      <Upgrade />
+      <Box>
+        <Divider />
+        <Box
+          display={"flex"}
+          alignItems="center"
+          px={4}
+          py={5}
+          // onClick={async () => await handleLogout()}
+        >
+          <Box
+            component="img"
+            src="/logoutIcon.svg"
+            alt="logout"
+            height={15.6}
+            width={15.6}
+            style={{
+              marginTop: "2px",
+            }}
+            // onClick={async () => await handleLogout()}
+          />
+          <Typography
+            variant="h6"
+            component="h6"
+            sx={{
+              color: "#8E8EA9",
+              mt: "2px",
+              ml: "4px",
+              cursor: "pointer",
+            }}
+          >
+            Logout
+          </Typography>
+        </Box>
+      </Box>
     </Drawer>
   );
 };

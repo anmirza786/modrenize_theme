@@ -9,7 +9,6 @@
     "@mui/lab": "5.0.0-alpha.106",
     "@mui/material": "^5.10.12",
     "@mui/x-date-pickers": "^5.0.6",
-    "@reduxjs/toolkit": "^1.8.3",
     "@tabler/icons": "^1.84.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
@@ -28,7 +27,9 @@
     "react-spring": "^9.2.4",
     "stylis-plugin-rtl": "^2.0.2",
     "web-vitals": "^2.1.4",
-    "yup": "^0.32.11"
+    "yup": "^0.32.11",
+    "@reduxjs/toolkit": "^1.9.5",
+    "react-redux": "^8.1.1"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
