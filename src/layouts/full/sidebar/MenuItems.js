@@ -1,6 +1,4 @@
-import {
-  IconAperture, IconCopy, IconLayoutDashboard, IconLogin, IconMoodHappy, IconTypography, IconUserPlus, IconSettings
-} from '@tabler/icons';
+import { IconLayoutDashboard, IconSettings } from '@tabler/icons';
 
 import { uniqueId } from 'lodash';
 
@@ -47,7 +45,7 @@ const Menuitems = [
   //   title: 'Register',
   //   icon: IconUserPlus,
   //   href: '/auth/register',
-  // },  
+  // },
   // {
   //   navlabel: true,
   //   subheader: 'Extra',

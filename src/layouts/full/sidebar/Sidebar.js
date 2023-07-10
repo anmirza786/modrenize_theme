@@ -1,11 +1,8 @@
 import { useMediaQuery, Box, Drawer, Divider, Typography } from '@mui/material';
-import Logo from '../shared/logo/Logo';
 import SidebarItems from './SidebarItems';
-import { Upgrade } from './Updrade';
-import SidebarLogo from './sidebarLogo'
+import SidebarLogo from './sidebarLogo';
 const Sidebar = (props) => {
-
-  const lgUp = useMediaQuery((theme) => theme.breakpoints.up("lg"));
+  const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
 
   const sidebarWidth = '270px';
 
@@ -55,7 +52,7 @@ const Sidebar = (props) => {
           <Box>
             <Divider />
             <Box
-              display={"flex"}
+              display={'flex'}
               alignItems="center"
               px={4}
               py={5}
@@ -68,17 +65,17 @@ const Sidebar = (props) => {
                 height={15.6}
                 width={15.6}
                 style={{
-                  marginTop: "2px",
+                  marginTop: '2px',
                 }}
               />
               <Typography
                 variant="h6"
                 component="h6"
                 sx={{
-                  color: "#8E8EA9",
-                  mt: "2px",
-                  ml: "4px",
-                  cursor: "pointer",
+                  color: '#8E8EA9',
+                  mt: '2px',
+                  ml: '4px',
+                  cursor: 'pointer',
                 }}
               >
                 Logout
@@ -107,7 +104,7 @@ const Sidebar = (props) => {
       {/* Logo */}
       {/* ------------------------------------------- */}
       <Box px={8}>
-      <SidebarLogo />
+        <SidebarLogo />
       </Box>
       {/* ------------------------------------------- */}
       {/* Sidebar For Mobile */}
@@ -116,7 +113,7 @@ const Sidebar = (props) => {
       <Box>
         <Divider />
         <Box
-          display={"flex"}
+          display={'flex'}
           alignItems="center"
           px={4}
           py={5}
@@ -129,7 +126,7 @@ const Sidebar = (props) => {
             height={15.6}
             width={15.6}
             style={{
-              marginTop: "2px",
+              marginTop: '2px',
             }}
             // onClick={async () => await handleLogout()}
           />
@@ -137,10 +134,10 @@ const Sidebar = (props) => {
             variant="h6"
             component="h6"
             sx={{
-              color: "#8E8EA9",
-              mt: "2px",
-              ml: "4px",
-              cursor: "pointer",
+              color: '#8E8EA9',
+              mt: '2px',
+              ml: '4px',
+              cursor: 'pointer',
             }}
           >
             Logout

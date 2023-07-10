@@ -1,6 +1,6 @@
 import React from 'react';
-import { Grid, Box, Card, Typography, Stack } from '@mui/material';
-import { Link, useLocation } from 'react-router-dom';
+import { Grid, Box, Card, Typography } from '@mui/material';
+import { useLocation } from 'react-router-dom';
 import PageContainer from 'src/components/container/PageContainer';
 import Logo from 'src/layouts/full/shared/logo/Logo';
 import SwiperSlideElement from './components/SwiperSlide';
