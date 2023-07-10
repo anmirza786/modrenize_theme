@@ -62,7 +62,11 @@ export const resetPasswordRequest = async (body) => {
       successToast(data.message);
       return true;
     } else {
-      errorToast(data.message);
+      if (data.message) {
+        errorToast(data.message);
+      } else {
+        errorToast('Oops! Something went wrong.');
+      }
       return false;
     }
   } catch (error) {
