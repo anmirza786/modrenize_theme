@@ -60,7 +60,7 @@ const Menuitems = [
     id: uniqueId(),
     title: 'Settings',
     icon: IconSettings,
-    href: '/sample-page',
+    href: '/settings',
   },
 ];
 
