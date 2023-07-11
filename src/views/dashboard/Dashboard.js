@@ -19,7 +19,7 @@ const Dashboard = () => {
           <Typography component="span" variant="h2" color="primary">
             {user.first_name} {user.last_name}
           </Typography>{' '}
-          ({user.role.name})
+          ({user.role?.name})
         </Typography>
       ) : (
         <></>

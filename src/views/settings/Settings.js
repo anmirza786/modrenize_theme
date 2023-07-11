@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -11,10 +11,10 @@ import { Box, Divider } from '@mui/material';
 import PageContainer from 'src/components/container/PageContainer';
 
 const Settings = () => {
-  const [user, setUser] = useState(null);
+  // const [user, setUser] = useState(null);
   useEffect(() => {
-    const localUser = localStorage.getItem('CRM3User');
-    setUser(JSON.parse(localUser));
+    // const localUser = localStorage.getItem('CRM3User');
+    // setUser(JSON.parse(localUser));
   }, []);
   return (
     <PageContainer title="Global Tekmed - Settings" description="this is Settings page">
