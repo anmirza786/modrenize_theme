@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   Avatar,
@@ -9,6 +9,7 @@ import {
   MenuItem,
   ListItemIcon,
   ListItemText,
+  Typography,
 } from '@mui/material';
 
 import { IconUser } from '@tabler/icons';
@@ -16,10 +17,13 @@ import { IconUser } from '@tabler/icons';
 import ProfileImg from 'src/assets/images/profile/user-1.jpg';
 import { logout } from 'src/views/authentication/AuthHelpers';
 import { localStorageKeys } from 'src/utils/helpers';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { useSelector } from 'react-redux';
 
 const Profile = () => {
   const navigate = useNavigate();
   const [anchorEl2, setAnchorEl2] = useState(null);
+  const [user, setUser] = useState(null);
   const handleClick2 = (event) => {
     setAnchorEl2(event.currentTarget);
   };
@@ -32,7 +36,11 @@ const Profile = () => {
       navigate('/auth/login');
     }
   };
-  const user = JSON.parse(localStorage.getItem(localStorageKeys.userObj))
+  const userData = useSelector((state) => state.User.user);
+  useEffect(() => {
+    const newUser = JSON.parse(localStorage.getItem(localStorageKeys.userObj));
+    setUser(newUser);
+  }, [userData]);
   return (
     <Box>
       <IconButton
@@ -41,21 +49,30 @@ const Profile = () => {
         color="inherit"
         aria-controls="msgs-menu"
         aria-haspopup="true"
-        sx={{
-          ...(typeof anchorEl2 === 'object' && {
-            color: 'primary.main',
-          }),
-        }}
+        // sx={{
+        //   ...(typeof anchorEl2 === 'object' && {
+        //     color: 'primary.main',
+        //   }),
+        // }}
+        disableRipple
         onClick={handleClick2}
       >
-        <Avatar
-          src={`https://anmirza360.pythonanywhere.com${user.avatar}`??ProfileImg}
-          alt={ProfileImg}
-          sx={{
-            width: 35,
-            height: 35,
-          }}
-        />
+        {user && (
+          <>
+            <Avatar
+              src={`${user?.avatar}`}
+              alt={user.first_name}
+              sx={{
+                width: 35,
+                height: 35,
+              }}
+            />
+            <Typography variant="body1" sx={{ color: '#000000', ml: 1 }}>
+              {user.first_name ?? 'Profile'}
+            </Typography>
+            <KeyboardArrowDownIcon />
+          </>
+        )}
       </IconButton>
       {/* ------------------------------------------- */}
       {/* Message Dropdown */}

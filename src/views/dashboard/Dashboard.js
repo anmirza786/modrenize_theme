@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Typography } from '@mui/material';
 import PageContainer from 'src/components/container/PageContainer';
 import { localStorageKeys } from 'src/utils/helpers';
@@ -6,9 +6,11 @@ import { getAuthorization } from './dashboardHelpers';
 
 const Dashboard = () => {
   const [user, setUser] = useState(null);
-  useEffect(() => {
+  useMemo(() => {
     const getAuth = async () => await getAuthorization();
     getAuth();
+  }, []);
+  useEffect(() => {
     const localUser = localStorage.getItem(localStorageKeys.userObj);
     setUser(JSON.parse(localUser));
   }, []);

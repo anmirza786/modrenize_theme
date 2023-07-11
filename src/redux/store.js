@@ -6,8 +6,12 @@ import Dialogs from './slices/dialogs';
 const store = configureStore({
   reducer: combineReducers({
     User,
-    Dialogs
+    Dialogs,
   }),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });
 
 export const { dispatch, getState } = store;

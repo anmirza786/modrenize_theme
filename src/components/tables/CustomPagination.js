@@ -5,47 +5,15 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import IconButton from '@mui/material/IconButton';
-import ArrowBackIosNewOutlinedIcon from '@mui/icons-material/ArrowBackIosNewOutlined';
-import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined';
-// import { useAppSelector } from '@/redux/store';
+import { Pagination } from '@mui/material';
 
 const CustomPagination = ({ data, getList, pageRange, setPageRange }) => {
-  // const pages = useAppSelector((state) => state.User.userList);
-  const [previousPage, setPreviousPage] = React.useState(false);
-  const [nextPage, setNextPage] = React.useState(false);
-  const [currentPage, setCurrentPage] = React.useState(1);
-
-  const handleChange = (event) => {
+  const handleChangeRange = (event) => {
     setPageRange(event.target.value);
     getList({ page: 1, page_size: event.target.value });
   };
-  React.useEffect(() => {
-    if (data?.next) {
-      setNextPage(true);
-    } else {
-      setNextPage(false);
-    }
-    if (data?.previous) {
-      setPreviousPage(true);
-    } else {
-      setPreviousPage(false);
-    }
-  }, [data]);
-
-  const handlePrevious = () => {
-    if (previousPage) {
-      setCurrentPage(currentPage - 1);
-      getList({ page: currentPage - 1 });
-      console.log(data.previous);
-    }
-  };
-  const handleNext = () => {
-    if (nextPage) {
-      setCurrentPage(currentPage + 1);
-      getList({ page: currentPage + 1 });
-      console.log(data.next);
-    }
+  const handleChange = (event, value) => {
+    getList({ page: value });
   };
 
   return (
@@ -54,7 +22,7 @@ const CustomPagination = ({ data, getList, pageRange, setPageRange }) => {
         <FormControl sx={{ ml: 0, mr: 1, minWidth: 70 }} size="small">
           <Select
             value={pageRange}
-            onChange={handleChange}
+            onChange={handleChangeRange}
             sx={{
               border: '1px solid #EAEAEF',
               boxShadow: '0px 1px 4px 0px #2121341A',
@@ -74,32 +42,12 @@ const CustomPagination = ({ data, getList, pageRange, setPageRange }) => {
         </Typography>
       </Box>
       <Box display="inline-flex" alignItems="center">
-        <IconButton
-          color="secondary"
-          disabled={previousPage ? false : true}
-          onClick={handlePrevious}
-        >
-          <ArrowBackIosNewOutlinedIcon />
-        </IconButton>
-        <Typography
-          variant="h5"
-          color="primary"
-          sx={{
-            minWidth: '40px',
-            height: '40px',
-            borderRadius: '5px',
-            color: '#271FE0',
-            // border: "1px solid #cecece",
-            textAlign: 'center',
-            p: '7px',
-            boxShadow: '0px 1px 4px 0px #1A1A431A',
-          }}
-        >
-          {currentPage}
-        </Typography>
-        <IconButton color="secondary" disabled={nextPage ? false : true} onClick={handleNext}>
-          <ArrowForwardIosOutlinedIcon />
-        </IconButton>
+        <Pagination
+          count={data?.totalPages}
+          page={data?.currentPage}
+          shape="rounded"
+          onChange={handleChange}
+        />
       </Box>
     </Stack>
   );

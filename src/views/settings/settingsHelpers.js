@@ -1,9 +1,9 @@
 import axios from '../../utils/axios';
 import { dispatch } from '../../redux/store';
 import { isEmpty } from 'lodash';
-import { setRoleList } from '../../redux/slices/users';
+import { setRoleList, setUser } from '../../redux/slices/users';
 import { errorToast, successToast } from '../../components/toasts/index';
-
+import { localStorageKeys } from 'src/utils/helpers';
 
 export const getUserRoleListing = async (data) => {
   const response = await axios.post(`api/role-listing/?page=${data.page}`, {
@@ -29,7 +29,7 @@ export const getUserRoleListing = async (data) => {
 };
 
 export const userUpdate = async (body) => {
-  console.log('body : ', body)
+  console.log('body : ', body);
   try {
     const { data } = await axios.put('/auth/update/', body, {
       rawRequest: true,
@@ -38,8 +38,9 @@ export const userUpdate = async (body) => {
       },
     });
     if (data.status === true) {
+      dispatch(setUser(data.data));
       successToast(data.message);
-      localStorage.setItem('CRM3User', JSON.stringify(data.data));
+      localStorage.setItem(localStorageKeys.userObj, JSON.stringify(data.data));
       return true;
     } else {
       errorToast(data.message);
