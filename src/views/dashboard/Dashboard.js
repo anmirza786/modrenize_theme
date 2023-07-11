@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Typography } from '@mui/material';
 import PageContainer from 'src/components/container/PageContainer';
 import { localStorageKeys } from 'src/utils/helpers';
-
-// components
+import { getAuthorization } from './dashboardHelpers';
 
 const Dashboard = () => {
   const [user, setUser] = useState(null);
   useEffect(() => {
+    const getAuth = async () => await getAuthorization();
+    getAuth();
     const localUser = localStorage.getItem(localStorageKeys.userObj);
     setUser(JSON.parse(localUser));
   }, []);

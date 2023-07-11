@@ -36,7 +36,6 @@ const Settings = () => {
               alt="logo"
               height={36}
               width={36}
-              priority
             />
           </ListItemIcon>
           <Typography variant="h5" component="h5" sx={{ color: '#000000' }}>
@@ -75,7 +74,7 @@ const Settings = () => {
             sx={{ py: 3 }}
           >
             <ListItemIcon>
-              <Box component="img" src="/roles.svg" alt="logo" height={36} width={36} priority />
+              <Box component="img" src="/roles.svg" alt="logo" height={36} width={36} />
             </ListItemIcon>
             <Typography variant="h5" component="h5" sx={{ color: '#000000' }}>
               Roles

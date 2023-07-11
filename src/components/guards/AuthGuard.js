@@ -1,14 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { localStorageKeys } from 'src/utils/helpers';
-import { getAuthorization } from 'src/views/dashboard/dashboardHelpers';
 
 // For routes that can only be accessed by authenticated users
 const AuthGuard = ({ children }) => {
-  useEffect(() => {
-    const getAuth = async () => await getAuthorization();
-    getAuth();
-  }, [getAuthorization]);
   const accessToken = localStorage.getItem(localStorageKeys.authToken);
   const userStr = localStorage.getItem(localStorageKeys.userObj);
   const user = userStr ? JSON.parse(userStr) : null;
