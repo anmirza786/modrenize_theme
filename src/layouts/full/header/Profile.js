@@ -15,6 +15,7 @@ import { IconUser } from '@tabler/icons';
 
 import ProfileImg from 'src/assets/images/profile/user-1.jpg';
 import { logout } from 'src/views/authentication/AuthHelpers';
+import { localStorageKeys } from 'src/utils/helpers';
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ const Profile = () => {
       navigate('/auth/login');
     }
   };
-
+  const user = JSON.parse(localStorage.getItem(localStorageKeys.userObj))
   return (
     <Box>
       <IconButton
@@ -48,7 +49,7 @@ const Profile = () => {
         onClick={handleClick2}
       >
         <Avatar
-          src={ProfileImg}
+          src={`https://anmirza360.pythonanywhere.com${user.avatar}`??ProfileImg}
           alt={ProfileImg}
           sx={{
             width: 35,

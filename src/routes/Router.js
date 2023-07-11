@@ -11,6 +11,15 @@ const BlankLayout = Loadable(lazy(() => import('../layouts/blank/BlankLayout')))
 /* ****Pages***** */
 const Dashboard = Loadable(lazy(() => import('../views/dashboard/Dashboard')));
 const Settings = Loadable(lazy(() => import('../views/settings/Settings')));
+const AccountSettings = Loadable(
+  lazy(() => import('../views/settings/account-settings/AccountSettings')),
+);
+const AddUser = Loadable(
+  lazy(() => import('../views/settings/user-listing/add-user/AddUser')),
+);
+const UserListing = Loadable(
+  lazy(() => import('../views/settings/user-listing/UserListing')),
+);
 const SamplePage = Loadable(lazy(() => import('../views/sample-page/SamplePage')));
 const Icons = Loadable(lazy(() => import('../views/icons/Icons')));
 const TypographyPage = Loadable(lazy(() => import('../views/utilities/TypographyPage')));
@@ -40,6 +49,9 @@ const Router = [
       { path: '*', element: <Navigate to="/auth/404" /> },
       { path: '/settings', exact: true, element: <Settings /> },
       { path: '/settings/role-listing', exact: true, element: <RoleListing /> },
+      { path: '/settings/account-settings', exact: true, element: <AccountSettings /> },
+      { path: '/settings/user-listing', exact: true, element: <UserListing /> },
+      { path: '/settings/user-listing/add-user', exact: true, element: <AddUser /> },
     ],
   },
   {

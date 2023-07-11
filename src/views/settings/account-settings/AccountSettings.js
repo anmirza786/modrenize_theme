@@ -5,18 +5,17 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined";
-import PageContainer from "@/app/(DashboardLayout)/components/container/PageContainer";
-import BackButton from "../../components/BackButton";
-import { errorToast } from "../../components/toasts";
+import BackButton from 'src/components/BackButton';
+import { errorToast } from '../../../components/toasts/index';
 import {
   CustomInputLabel,
   BootstrapInput,
-} from "@/app/(DashboardLayout)/components/forms/theme-elements/BootstrapInput";
-import { userUpdate } from "../SettingsHelper";
+} from "../../../components/forms/theme-elements/BootstrapInput";
+import { userUpdate } from "../settingsHelpers";
 import { MuiTelInput } from "mui-tel-input";
 import { Avatar, Badge } from "@mui/material";
-import { useRouter } from "next/navigation";
-
+// import { useRouter } from "next/navigation";
+import PageContainer from "src/components/container/PageContainer";
 
 const AccountSettings = () => {
   const [user, setUser] = useState({
@@ -32,11 +31,11 @@ const AccountSettings = () => {
   const [password1, setPassword1] = useState("");
   const [password2, setPassword2] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [profileImage, setProfileImage] = useState<any | null>(null);
-  const [profileImageBlob, setProfileImageBlob] = useState<any | null>(null);
+  const [profileImage, setProfileImage] = useState(null);
+  const [profileImageBlob, setProfileImageBlob] = useState(null);
 
-  const inputFile = useRef<any>(null);
-  const router = useRouter();
+  const inputFile = useRef(null);
+  // const router = useRouter();
 
   useEffect(() => {
     initializeUser();
@@ -44,12 +43,17 @@ const AccountSettings = () => {
 
   const initializeUser = () => {
     const storedUser = window.localStorage.getItem("CRM3User");
+    // const storedUser = JSON.parse(localStorage.getItem(localStorageKeys.userObj))
     if (storedUser) {
+      console.log("stored user : ", storedUser)
       const u = JSON.parse(storedUser);
       setUser(u);
       setFirstname(u.first_name);
       setLastname(u.last_name);
       setEmail(u.email);
+      setPhone(u.phone)
+      setAddress(u.address)
+      setProfileImage(u.avatar)
     }
   };
 
@@ -126,7 +130,7 @@ const AccountSettings = () => {
       title="Global Tekmed - Update User"
       description="this is user settings page"
     >
-      <Box component="form" onSubmit={handleSubmit}>
+      <Box component="form" onSubmit={handleSubmit} sx={{ px: 2, py: 2 }}>
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Box component="div">
             <BackButton />
@@ -139,7 +143,7 @@ const AccountSettings = () => {
               color="secondary"
               variant="outlined"
               disabled={isLoading}
-              onClick={() => router.back()}
+              // onClick={() => router.back()}
               sx={{ mr: 2, fontWeight: "700", color: "#000000" }}
             >
               Cancel
@@ -198,33 +202,6 @@ const AccountSettings = () => {
                   // "/images/profile/Oval.png"
                 />
               </Badge>
-            </Grid>
-            <Grid item xs={12} md={11}>
-              <Button
-                size="medium"
-                color="secondary"
-                variant="outlined"
-                disabled={isLoading}
-                onClick={() => setProfileImage([])}
-                sx={{
-                  fontWeight: "700",
-                  color: "#666687",
-                  backgroundColor: "#eaeaef",
-                  ml: { xs: 0, md: 6 },
-                }}
-              >
-                delete
-              </Button>
-              <Button
-                size="medium"
-                color="primary"
-                variant="contained"
-                disabled={isLoading}
-                onClick={() => inputFile.current.click()}
-                sx={{ ml: 2, fontWeight: "700" }}
-              >
-                Upload New
-              </Button>
             </Grid>
           </Grid>
           <Grid container spacing={2}>
