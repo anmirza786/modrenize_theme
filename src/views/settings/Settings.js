@@ -4,11 +4,12 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Typography from '@mui/material/Typography';
-// import PageContainer from '@/app/(DashboardLayout)/components/container/PageContainer';
 import PersonAddAltOutlinedIcon from '@mui/icons-material/PersonAddAltOutlined';
 import NavigateNextOutlinedIcon from '@mui/icons-material/NavigateNextOutlined';
 import { Box, Divider } from '@mui/material';
 import PageContainer from 'src/components/container/PageContainer';
+// import BackButton from 'src/components/BackButton';
+
 
 const Settings = () => {
   const [user, setUser] = useState(null);
@@ -18,7 +19,7 @@ const Settings = () => {
   }, []);
   return (
     <PageContainer title="Global Tekmed - Settings" description="this is Settings page">
-      <List component="nav" sx={{ px: 9, py: 4.5 }}>
+      <List component="nav" sx={{ px: 8, py: 3 }}>
         <ListItem
           component="a"
           href="/settings/account-settings"
@@ -44,7 +45,7 @@ const Settings = () => {
           </Typography>
         </ListItem>
         <Divider sx={{ borderBottomWidth: '1.5px' }} />
-        {/* {user?.role?.id === 1 && ( */}
+        {user?.role?.id === 1 && (
         <>
           <ListItem
             component="a"
@@ -83,7 +84,7 @@ const Settings = () => {
           </ListItem>
           <Divider sx={{ borderBottomWidth: '1.5px' }} />
         </>
-        {/* )} */}
+        )}
       </List>
     </PageContainer>
   );
