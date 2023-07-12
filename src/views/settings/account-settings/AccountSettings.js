@@ -130,6 +130,8 @@ const AccountSettings = () => {
     }
   };
 
+  console.log("profileImage : ", profileImage)
+
   return (
     <PageContainer title="Global Tekmed - Update User" description="this is user settings page">
       <Box component="form" onSubmit={handleSubmit} sx={{ px: 2, py: 2 }}>
@@ -310,7 +312,7 @@ const AccountSettings = () => {
           </Grid>
         </Box>
       </Box>
-      <ImageCropper imageToCrop={profileImage} inputFile={inputFile}/>
+      <ImageCropper imageToCrop={profileImage} inputFile={inputFile} croppedImage={setProfileImage}/>
     </PageContainer>
   );
 };

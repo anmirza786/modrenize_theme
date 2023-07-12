@@ -66,6 +66,7 @@ export default function CustomizedDialogs(props) {
 
     ctx.drawImage(
       image,
+      image.crossOrigin = 'anonymous',
       crop.x * scaleX,
       crop.y * scaleY,
       crop.width * scaleX,
@@ -73,21 +74,25 @@ export default function CustomizedDialogs(props) {
       0,
       0,
       crop.width,
-      crop.height
+      crop.height,
     );
     var base64Image
     console.log(canvas)
     
 
-     new Promise((reject, resolve) => {
-        canvas.toDataURL("image1/jpeg");
-      });
+    //  new Promise((reject, resolve) => {
+       
+    //    resolve(
+        base64Image = canvas.toDataURL("image1/*")
+      // });
     // const blob = new Blob(base64Image);
     var url = base64Image;
 
-    fetch(url)
-      .then((res) => res.blob())
-      .then(console.log);
+    console.log("you are El : ", url)
+
+    // fetch(url)
+    //   .then((res) => res.blob())
+    //   .then(console.log);
     // croppedImage(base64Image);
   };
 
