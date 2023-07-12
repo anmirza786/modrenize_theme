@@ -22,6 +22,7 @@
   font-weight: 500;
   top: 8px;
   right: 20px;
+  color: #000000;
 }
 
 .btn-color-mode-switch > label.btn-color-mode-switch-inner:after {
@@ -46,7 +47,7 @@
   color: #fff;
 }
 
-.btn-color-mode-switch input[type="checkbox"] {
+.btn-color-mode-switch input[type='checkbox'] {
   cursor: pointer;
   width: 55px;
   height: 25px;
@@ -57,28 +58,21 @@
   margin: 0px;
 }
 
-.btn-color-mode-switch
-  input[type="checkbox"]:checked
-  + label.btn-color-mode-switch-inner {
+.btn-color-mode-switch input[type='checkbox'] + label.btn-color-mode-switch-inner {
   color: #4945ff;
 }
 
-.btn-color-mode-switch
-  input[type="checkbox"]:checked
-  + label.btn-color-mode-switch-inner:after {
+.btn-color-mode-switch input[type='checkbox']:checked + label.btn-color-mode-switch-inner:after {
   content: attr(data-on);
   left: 72px;
 }
 
-.btn-color-mode-switch
-  input[type="checkbox"]:checked
-  + label.btn-color-mode-switch-inner:before {
+.btn-color-mode-switch input[type='checkbox']:checked + label.btn-color-mode-switch-inner:before {
   content: attr(data-off);
   right: auto;
   left: 14px;
-  color: #000000;
 }
 
-.btn-color-mode-switch input[type="checkbox"]:checked ~ .alert {
+.btn-color-mode-switch input[type='checkbox']:checked ~ .alert {
   display: block;
 }

@@ -42,6 +42,11 @@ export const rolesTableColumnDefs = [
   {
     field: 'description',
   },
+  {
+    headerName: 'Users',
+    field: 'userCount',
+    maxWidth: 200,
+  },
   // {
   //   headerName: "Actions",
   //   cellRenderer: "ActionButtons",

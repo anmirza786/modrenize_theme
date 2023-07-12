@@ -14,50 +14,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import BackButton from 'src/components/BackButton';
 import { useSelector } from 'react-redux';
 import Filter from 'src/components/tables/Filters';
-import SearchIcon from '@mui/icons-material/Search';
 import { isEqual } from 'lodash';
-
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: '100%',
-  position: 'absolute',
-  pointerEvents: 'none',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: 'black',
-  '& .MuiInputBase-input': {
-    padding: theme.spacing(1, 1, 1, 0),
-    border: '1px solid rgba(103, 108, 113, 0.5)',
-    borderRadius: '5px',
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),
-    marginRight: '5px',
-    cursor: 'pointer',
-    '&:focus': {
-      width: '20ch',
-    },
-    width: '0ch',
-  },
-}));
-
-const Search = styled('div')(({ theme }) => ({
-  position: 'relative',
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginLeft: 0,
-  width: '100%',
-  [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(1),
-    width: 'auto',
-  },
-}));
+import Search from 'src/components/tables/Search';
 
 const UsersListing = () => {
   // ref for fetching data
@@ -142,29 +100,7 @@ const UsersListing = () => {
         {!filterOpen ? (
           <Stack direction="row" justifyContent="space-between">
             <Stack direction="row" justifyContent="start">
-              <Box component="form" onSubmit={handleApplySearch}>
-                <Search>
-                  <SearchIconWrapper>
-                    <SearchIcon />
-                  </SearchIconWrapper>
-                  <StyledInputBase
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    inputProps={{ 'aria-label': 'search' }}
-                    sx={
-                      search && {
-                        color: 'black',
-                        '& .MuiInputBase-input': {
-                          width: '20ch',
-                          '&:focus': {
-                            width: '20ch',
-                          },
-                        },
-                      }
-                    }
-                  />
-                </Search>
-              </Box>
+              <Search handleApplySearch={handleApplySearch} setSearch={setSearch} search={search} />
               {!search && (
                 <Button
                   variant="outlined"

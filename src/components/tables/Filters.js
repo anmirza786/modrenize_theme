@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import { memo, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { roleSelectList } from 'src/views/settings/settingsHelpers';
+import { LoadingButton } from '@mui/lab';
 
 const StatusList = [
   {
@@ -33,6 +34,7 @@ const Filters = ({
     getRoles();
   }, []);
   const roles = useSelector((state) => state.User.userRoles);
+  const loader = useSelector((state) => state.User.loading);
   return (
     <Box
       component={'form'}
@@ -86,12 +88,19 @@ const Filters = ({
           color="secondary"
           sx={{ color: '#000000', mr: 1 }}
           onClick={cancelFilter}
+          disabled={loader}
         >
           Cancel
         </Button>
-        <Button variant="contained" type="submit" onClick={applyFilter}>
+        <LoadingButton
+          loading={loader}
+          loadingIndicator="Loading…"
+          variant="contained"
+          type="submit"
+          onClick={applyFilter}
+        >
           Apply Filter
-        </Button>
+        </LoadingButton>
       </Box>
     </Box>
   );

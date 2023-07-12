@@ -14,12 +14,9 @@ const Settings = Loadable(lazy(() => import('../views/settings/Settings')));
 const AccountSettings = Loadable(
   lazy(() => import('../views/settings/account-settings/AccountSettings')),
 );
-const AddUser = Loadable(
-  lazy(() => import('../views/settings/user-listing/add-user/AddUser')),
-);
-const UserListing = Loadable(
-  lazy(() => import('../views/settings/user-listing/UserListing')),
-);
+const AddUser = Loadable(lazy(() => import('../views/settings/user-listing/add-user/AddUser')));
+const EditUser = Loadable(lazy(() => import('../views/settings/user-listing/edit-user/EditUser')));
+const UserListing = Loadable(lazy(() => import('../views/settings/user-listing/UserListing')));
 const SamplePage = Loadable(lazy(() => import('../views/sample-page/SamplePage')));
 const Icons = Loadable(lazy(() => import('../views/icons/Icons')));
 const TypographyPage = Loadable(lazy(() => import('../views/utilities/TypographyPage')));
@@ -46,19 +43,27 @@ const Router = [
       { path: '/icons', exact: true, element: <Icons /> },
       { path: '/ui/typography', exact: true, element: <TypographyPage /> },
       { path: '/ui/shadow', exact: true, element: <Shadow /> },
-      { path: '*', element: <Navigate to="/auth/404" /> },
+      { path: '*', element: <Navigate to="/404" /> },
       { path: '/settings', exact: true, element: <Settings /> },
       { path: '/settings/role-listing', exact: true, element: <RoleListing /> },
       { path: '/settings/account-settings', exact: true, element: <AccountSettings /> },
       { path: '/settings/user-listing', exact: true, element: <UserListing /> },
       { path: '/settings/user-listing/add-user', exact: true, element: <AddUser /> },
+      { path: '/settings/user-listing/edit-user', exact: true, element: <EditUser /> },
+    ],
+  },
+  {
+    path: '/',
+    element: <BlankLayout />,
+    children: [
+      { path: '404', element: <Error /> },
+      { path: '*', element: <Navigate to="/404" /> },
     ],
   },
   {
     path: '/auth',
     element: <BlankLayout />,
     children: [
-      { path: '404', element: <Error /> },
       // { path: '/auth/register', element: <Register /> },
       { path: '/auth/login', element: <Login /> },
       { path: '/auth/otp-confirmation', element: <OTPConfirmation /> },

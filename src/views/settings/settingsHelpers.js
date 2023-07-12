@@ -1,7 +1,7 @@
 import axios from '../../utils/axios';
 import { dispatch, getState } from '../../redux/store';
 import { isEmpty } from 'lodash';
-import { setRoleList, setUser, setUserRoles } from '../../redux/slices/users';
+import { setLoading, setRoleList, setUser, setUserRoles } from '../../redux/slices/users';
 import { errorToast, successToast } from '../../components/toasts/index';
 import { localStorageKeys } from 'src/utils/helpers';
 
@@ -9,6 +9,7 @@ export const getUserRoleListing = async (data) => {
   const response = await axios.post(`api/role-listing/?page=${data.page}`, {
     page_size: data.page_size ?? 10,
   });
+  dispatch(setLoading(true));
   try {
     if (!isEmpty(response?.data) && response?.status === 200) {
       const resData = {
@@ -19,12 +20,15 @@ export const getUserRoleListing = async (data) => {
           id: d.id,
           name: d.name,
           description: d.description,
+          userCount: d.user_count,
         })),
       };
       dispatch(setRoleList(resData));
     }
   } catch (error) {
     console.error(error);
+  } finally {
+    dispatch(setLoading(false));
   }
 };
 

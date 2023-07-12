@@ -4,29 +4,36 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import PageContainer from 'src/components/container/PageContainer';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
-import CustomSwitch from './CustomSwitch';
+import CustomSwitch from '../add-user/CustomSwitch';
 import { Autocomplete, TextField } from '@mui/material';
-import { createUser } from './createUserApi';
+import { updateUser, getUser } from './editUserApi';
+import { roleSelectList } from '../../settingsHelpers';
+import { useSelector } from 'react-redux';
 import { useCallback, useEffect, useState } from 'react';
 import BackButton from 'src/components/BackButton';
 import {
   CustomInputLabel,
   BootstrapInput,
-} from '../../../../components/forms/theme-elements/BootstrapInput';
-import { errorToast } from '../../../../components/toasts/index';
-import { useSelector } from 'react-redux';
-import { roleSelectList } from '../../settingsHelpers';
+} from 'src/components/forms/theme-elements/BootstrapInput';
+import { useLocation, useNavigate } from 'react-router';
 
-const UsersListing = () => {
+const EditUser = () => {
   const [roleValue, setRoleValue] = useState(null);
   const [roleId, setRoleId] = useState(null);
   const [active, setActive] = useState(true);
+  const [email, setEmail] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [loading, setLoading] = useState(false);
-  // const router = useRouter();
-
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const user = queryParams.get('userId');
+  const navigate = useNavigate();
+  const userId = parseInt(user ?? '1');
   const populateUserRoles = useCallback(async () => {
     const body = {
-      page_size: 500,
+      page_size: 100,
+      name: '',
     };
     await roleSelectList(body);
   }, []);
@@ -36,6 +43,25 @@ const UsersListing = () => {
   }, [populateUserRoles]);
 
   const roleList = useSelector((state) => state.User.userRoles);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const singleUserData = await getUser(userId);
+        setEmail(singleUserData.email);
+        setFirstName(singleUserData.first_name);
+        setLastName(singleUserData.last_name);
+        setActive(singleUserData.is_active);
+        setRoleValue(singleUserData.role.name);
+        setRoleId(singleUserData.role.id);
+      } catch (error) {
+        // Handle error
+        console.log(error);
+      }
+    };
+
+    fetchData();
+  }, [roleList, userId]);
+
   const handlesubmit = async (event) => {
     event.preventDefault();
     const formBody = {
@@ -44,20 +70,16 @@ const UsersListing = () => {
       last_name: event.target.lastname.value,
       role: roleId,
       is_active: active,
-      password: event.target.password1.value,
     };
-    const password2 = event.target.password2.value;
-    if (formBody.password.length >= 8 && formBody.password === password2) {
-      setLoading(true);
-      const response = await createUser(formBody);
+    setLoading(true);
+    try {
+      const response = await updateUser(formBody, userId);
       if (response) {
-        // router.back();
-        setLoading(false);
+        navigate(-1);
       }
-    } else if (formBody.password.length < 8) {
-      errorToast('Password must be of 8 characters');
-    } else {
-      errorToast('Passwords do not match');
+    } catch (e) {
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -66,7 +88,7 @@ const UsersListing = () => {
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Box component="div">
             <BackButton />
-            <Typography variant="h3">Add User</Typography>
+            <Typography variant="h3">Edit User</Typography>
           </Box>
           <Box component="div" display="flex">
             <Button
@@ -75,7 +97,7 @@ const UsersListing = () => {
               color="secondary"
               variant="outlined"
               disabled={loading}
-              // onClick={() => router.back()}
+              onClick={() => navigate(-1)}
               sx={{ mr: 2, fontWeight: '700', color: '#000000' }}
             >
               Cancel
@@ -89,7 +111,7 @@ const UsersListing = () => {
               startIcon={<CheckOutlinedIcon />}
               sx={{ fontWeight: '700' }}
             >
-              Add User
+              Update User
             </Button>
           </Box>
         </Box>
@@ -102,13 +124,23 @@ const UsersListing = () => {
               <CustomInputLabel shrink htmlFor="firstname">
                 First Name*
               </CustomInputLabel>
-              <BootstrapInput id="firstname" required />
+              <BootstrapInput
+                id="firstname"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                required
+              />
             </Grid>
             <Grid item xs={12} md={6}>
               <CustomInputLabel shrink htmlFor="lastname">
                 Last Name*
               </CustomInputLabel>
-              <BootstrapInput id="lastname" required />
+              <BootstrapInput
+                id="lastname"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                required
+              />
             </Grid>
           </Grid>
           <Grid container spacing={2}>
@@ -116,21 +148,13 @@ const UsersListing = () => {
               <CustomInputLabel shrink htmlFor="email">
                 Email*
               </CustomInputLabel>
-              <BootstrapInput id="email" type="email" required />
-            </Grid>
-          </Grid>
-          <Grid container spacing={2}>
-            <Grid item xs={12} md={6}>
-              <CustomInputLabel shrink htmlFor="password1">
-                Password*
-              </CustomInputLabel>
-              <BootstrapInput id="password1" type="password" required />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <CustomInputLabel shrink htmlFor="password2">
-                Confirm Password*
-              </CustomInputLabel>
-              <BootstrapInput id="password2" type="password" required />
+              <BootstrapInput
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
             </Grid>
           </Grid>
           <Grid container spacing={2}>
@@ -157,13 +181,9 @@ const UsersListing = () => {
                   id="roles"
                   value={roleValue}
                   onChange={(event, newValue) => {
-                    if (newValue) {
-                      setRoleValue(newValue);
-                      setRoleId(newValue.id);
-                    } else {
-                      setRoleValue(null);
-                      setRoleId(null);
-                    }
+                    setRoleValue(newValue);
+                    console.log(event);
+                    setRoleId(newValue.id);
                   }}
                   options={roleList}
                   renderInput={(params) => (
@@ -181,4 +201,4 @@ const UsersListing = () => {
   );
 };
 
-export default UsersListing;
+export default EditUser;
