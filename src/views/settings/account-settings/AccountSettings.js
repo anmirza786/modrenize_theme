@@ -1,35 +1,39 @@
-import { useState, useEffect, useRef } from "react";
-import { isEqual } from "lodash";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
-import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined";
+import { useState, useEffect, useRef } from 'react';
+import { isEqual } from 'lodash';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Grid';
+import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import BackButton from 'src/components/BackButton';
 import { errorToast } from '../../../components/toasts/index';
 import {
   CustomInputLabel,
   BootstrapInput,
-} from "../../../components/forms/theme-elements/BootstrapInput";
-import { userUpdate } from "../settingsHelpers";
-import { MuiTelInput } from "mui-tel-input";
-import { Avatar, Badge } from "@mui/material";
+} from '../../../components/forms/theme-elements/BootstrapInput';
+import { jsonMomoa, userUpdate } from '../settingsHelpers';
+import { MuiTelInput } from 'mui-tel-input';
+import { Avatar, Badge } from '@mui/material';
 // import { useRouter } from "next/navigation";
-import PageContainer from "src/components/container/PageContainer";
+import PageContainer from 'src/components/container/PageContainer';
+import ImageCropper from 'src/components/dialogs/ImageCropper';
+import { useDispatch } from 'react-redux';
+import { setImageDialog } from 'src/redux/slices/dialogs';
 
 const AccountSettings = () => {
+  const dispatch = useDispatch();
   const [user, setUser] = useState({
-    first_name: "",
-    last_name: "",
-    email: "",
+    first_name: '',
+    last_name: '',
+    email: '',
   });
-  const [firstname, setFirstname] = useState("");
-  const [lastname, setLastname] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [address, setAddress] = useState("");
-  const [password1, setPassword1] = useState("");
-  const [password2, setPassword2] = useState("");
+  const [firstname, setFirstname] = useState('');
+  const [lastname, setLastname] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [address, setAddress] = useState('');
+  const [password1, setPassword1] = useState('');
+  const [password2, setPassword2] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [profileImage, setProfileImage] = useState(null);
   const [profileImageBlob, setProfileImageBlob] = useState(null);
@@ -42,23 +46,24 @@ const AccountSettings = () => {
   }, []);
 
   const initializeUser = () => {
-    const storedUser = window.localStorage.getItem("CRM3User");
+    const storedUser = window.localStorage.getItem('CRM3User');
     // const storedUser = JSON.parse(localStorage.getItem(localStorageKeys.userObj))
     if (storedUser) {
-      console.log("stored user : ", storedUser)
-      const u = JSON.parse(storedUser);
+      console.log('stored user : ', storedUser);
+      const u = jsonMomoa(storedUser);
+      // JSON.parse(storedUser);
       setUser(u);
       setFirstname(u.first_name);
       setLastname(u.last_name);
       setEmail(u.email);
-      setPhone(u.phone)
-      setAddress(u.address)
-      setProfileImage(u.avatar)
+      setPhone(u.phone);
+      setAddress(u.address);
+      setProfileImage(u.avatar);
     }
   };
 
   const handleImageUpload = (e) => {
-    console.log("e.target.files[0] : ", e.target.files);
+    console.log('e.target.files[0] : ', e.target.files);
     setProfileImage(URL.createObjectURL(e.target.files[0]));
     setProfileImageBlob(e.target.files);
   };
@@ -69,8 +74,8 @@ const AccountSettings = () => {
     if (password1 && (password1.length < 8 || password1 !== password2)) {
       errorToast(
         password1.length < 8
-          ? "The password must be at least 8 characters."
-          : "The password did not match to confirm password."
+          ? 'The password must be at least 8 characters.'
+          : 'The password did not match to confirm password.',
       );
       return;
     }
@@ -88,27 +93,27 @@ const AccountSettings = () => {
     }
 
     const formData = new FormData();
-    formData.append("first_name", firstname);
-    formData.append("last_name", lastname);
-    formData.append("email", email);
+    formData.append('first_name', firstname);
+    formData.append('last_name', lastname);
+    formData.append('email', email);
 
     if (password1) {
       // body.password = password1;
-      formData.append("password", password1);
+      formData.append('password', password1);
     }
 
     if (phone) {
-      formData.append("phone", phone);
+      formData.append('phone', phone);
       // body.phone = phone;
     }
 
     if (address) {
-      formData.append("address", address);
+      formData.append('address', address);
       // body.address = address;
     }
 
     if (profileImageBlob) {
-      formData.append("avatar", profileImageBlob[0]);
+      formData.append('avatar', profileImageBlob[0]);
       // body.profileImage = profileImage
     }
 
@@ -119,17 +124,14 @@ const AccountSettings = () => {
     try {
       await userUpdate(body);
     } catch (error) {
-      errorToast("An error occurred while updating the user.");
+      errorToast('An error occurred while updating the user.');
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <PageContainer
-      title="Global Tekmed - Update User"
-      description="this is user settings page"
-    >
+    <PageContainer title="Global Tekmed - Update User" description="this is user settings page">
       <Box component="form" onSubmit={handleSubmit} sx={{ px: 2, py: 2 }}>
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Box component="div">
@@ -144,7 +146,7 @@ const AccountSettings = () => {
               variant="outlined"
               disabled={isLoading}
               // onClick={() => router.back()}
-              sx={{ mr: 2, fontWeight: "700", color: "#000000" }}
+              sx={{ mr: 2, fontWeight: '700', color: '#000000' }}
             >
               Cancel
             </Button>
@@ -155,13 +157,13 @@ const AccountSettings = () => {
               variant="contained"
               startIcon={<CheckOutlinedIcon />}
               disabled={isLoading}
-              sx={{ fontWeight: "700" }}
+              sx={{ fontWeight: '700' }}
             >
               Update
             </Button>
           </Box>
         </Box>
-        <Box sx={{ border: "1px solid #EAEAEF", p: 3, my: 4 }}>
+        <Box sx={{ border: '1px solid #EAEAEF', p: 3, my: 4 }}>
           <Typography sx={{ my: 2 }} variant="h5">
             Basic Details
           </Typography>
@@ -172,33 +174,30 @@ const AccountSettings = () => {
             multiple={false}
             ref={inputFile}
             onChange={handleImageUpload}
-            style={{ display: "none" }}
+            style={{ display: 'none' }}
           />
-          <Grid
-            container
-            alignItems="center"
-            sx={{ py: "25px", gap: { xs: 1, md: 0 } }}
-          >
+          <Grid container alignItems="center" sx={{ py: '25px', gap: { xs: 1, md: 0 } }}>
             <Grid item xs={12} md={1}>
               <Badge
                 overlap="circular"
-                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-                sx={{ cursor: "pointer" }}
-                onClick={() => inputFile.current.click()}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                sx={{ cursor: 'pointer' }}
+                // onClick={() => inputFile.current.click()}
+                onClick={() => dispatch(setImageDialog(true))}
                 badgeContent={
                   <Box
-                    component={"img"}
-                    height={"20px"}
-                    width={"20px"}
+                    component={'img'}
+                    height={'20px'}
+                    width={'20px'}
                     src="/images/plus.svg"
                     alt="+"
                   />
                 }
               >
                 <Avatar
-                  sx={{ height: "80px", width: "80px" }}
+                  sx={{ height: '80px', width: '80px' }}
                   alt="Travis Howard"
-                  src={profileImage ?? "/images/profile/Oval.png"}
+                  src={profileImage ?? '/images/profile/Oval.png'}
                   // "/images/profile/Oval.png"
                 />
               </Badge>
@@ -248,15 +247,15 @@ const AccountSettings = () => {
               <MuiTelInput
                 // defaultCountry="US"
                 // label={'phone'}
-                inputProps={{ style: { height: "12px" } }}
+                inputProps={{ style: { height: '12px' } }}
                 sx={{
-                  "& .MuiOutlinedInput-root": {
-                    border: "1px solid #E0E3E7",
-                    "&:hover fieldset": {
-                      border: "1px solid #E0E3E7",
+                  '& .MuiOutlinedInput-root': {
+                    border: '1px solid #E0E3E7',
+                    '&:hover fieldset': {
+                      border: '1px solid #E0E3E7',
                     },
-                    "&:focus fieldset": {
-                      border: "1px solid #E0E3E7",
+                    '&:focus fieldset': {
+                      border: '1px solid #E0E3E7',
                     },
                   },
                 }}
@@ -279,7 +278,7 @@ const AccountSettings = () => {
             </Grid>
           </Grid>
         </Box>
-        <Box sx={{ border: "1px solid #EAEAEF", p: 3, my: 4 }}>
+        <Box sx={{ border: '1px solid #EAEAEF', p: 3, my: 4 }}>
           <Typography sx={{ my: 2 }} variant="h5">
             Change Passowrd
           </Typography>
@@ -311,6 +310,7 @@ const AccountSettings = () => {
           </Grid>
         </Box>
       </Box>
+      <ImageCropper imageToCrop={profileImage} inputFile={inputFile}/>
     </PageContainer>
   );
 };

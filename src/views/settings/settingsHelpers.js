@@ -50,3 +50,7 @@ export const userUpdate = async (body) => {
     return true;
   }
 };
+
+export const jsonMomoa = (momo) => {
+  return JSON.parse(momo);
+}
