@@ -2,6 +2,7 @@ import { toast } from 'react-hot-toast';
 
 export const successToast = (message) => {
   toast.success(message, {
+    // custom styles for react-hot-toast that could be called anywhere
     style: {
       background: '#49AF41',
       padding: '16px',
@@ -16,6 +17,7 @@ export const successToast = (message) => {
 };
 export const errorToast = (message) => {
   toast.error(message, {
+    // custom styles for react-hot-toast that could be called anywhere
     style: {
       background: '#F73131',
       padding: '16px',

@@ -4,6 +4,7 @@ import { localStorageKeys } from 'src/utils/helpers';
 
 // For routes that can only be accessed by authenticated users
 const AuthGuard = ({ children }) => {
+  // state for auth check
   const accessToken = localStorage.getItem(localStorageKeys.authToken);
   const userStr = localStorage.getItem(localStorageKeys.userObj);
   const user = userStr ? JSON.parse(userStr) : null;

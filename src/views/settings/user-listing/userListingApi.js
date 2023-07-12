@@ -9,6 +9,8 @@ export const getUserListing = async (data) => {
     const response = await axios.post(`api/user-listing/?page=${data.page}`, {
       page_size: data.page_size ?? 10,
       search: data.search ?? null,
+      is_active: data.is_active ?? null,
+      role: data.role ?? null,
     });
     if (!isEmpty(response?.data) && response?.status === 200) {
       const resData = {

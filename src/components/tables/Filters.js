@@ -1,78 +1,99 @@
-import { Button, Grid, TextField } from '@mui/material';
-import { memo } from 'react';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import { memo, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { roleSelectList } from 'src/views/settings/settingsHelpers';
 
-const Filters = () => {
-  //   const cityListing = useSelector((state) => state.MasterData.cityListing);
+const StatusList = [
+  {
+    label: 'Active',
+    id: 1,
+  },
+  {
+    label: 'Inactive',
+    id: 0,
+  },
+];
 
-  //   const handleFilterValues = (name, value) => {
-  //     let cloneFilter = cloneDeep(filterValues);
-  //     cloneFilter[name] = value ?? '';
-  //     setFilterValues(cloneFilter);
-  //   };
-
+const Filters = ({
+  selectedRoleFilterValue,
+  selectedStatusFilterValue,
+  setSelectedRoleFilter,
+  setSelectedRoleFilterValue,
+  setSelectedStatusFilter,
+  setSelectedStatusFilterValue,
+  applyFilter,
+  cancelFilter,
+}) => {
+  useEffect(() => {
+    const getRoles = async () => await roleSelectList();
+    getRoles();
+  }, []);
+  const roles = useSelector((state) => state.User.userRoles);
   return (
-    <Grid container sx={{ marginBottom: '20px' }} spacing={1}>
-      <Grid item xs={12} sm={4} lg={2.5}>
-        <TextField
-          fullWidth
-          //   value={filterValues.town ? filterValues.town : ''}
-          name="town"
-          placeholder="Search Name"
-          size="small"
-          //   onChange={(e) => handleFilterValues('town', e.target.value)}
-        />
-      </Grid>
-      <Grid item xs={12} sm={4} lg={2.5}>
-        {/* <Autocomplete
-          name="city"
-          id="cities"
-        //   options={cityListing}
-          isOptionEqualToValue={(option, value) => option.name === value}
-          value={filterValues.city?.name ? filterValues.city.name : null}
-          getOptionLabel={(option) => (option.name ? option.name : option)}
-          onChange={(e, value) => {
-            handleFilterValues('city', value);
-          }}
-          size="small"
-          renderInput={(params) => <TextField label="Select City" {...params} />}
-        />
-      </Grid>
-      <Grid item xs={12} sm={4} lg={2.5}>
-        <Autocomplete
-          name="type"
-          id="types"
-          options={typeListing}
-          isOptionEqualToValue={(option, value) => option === value}
-          value={filterValues.type ? filterValues.type : null}
-          getOptionLabel={(option) => option}
-          onChange={(e, value) => {
-            handleFilterValues('type', value);
-          }}
-          size="small"
-          renderInput={(params) => <TextField label="Select Type" {...params} />}
-        />*/}
-      </Grid>
-      <Grid item xs={12} lg={4.5} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+    <Box
+      component={'form'}
+      display={'flex'}
+      justifyContent={'space-between'}
+      onSubmit={applyFilter}
+    >
+      <Box>
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={6}>
+            <Autocomplete
+              disablePortal
+              options={roles ?? []}
+              value={selectedRoleFilterValue}
+              onChange={(event, newValue) => {
+                if (newValue) {
+                  setSelectedRoleFilterValue(newValue);
+                  setSelectedRoleFilter(newValue.id);
+                } else {
+                  setSelectedRoleFilterValue(null);
+                  setSelectedRoleFilter(null);
+                }
+              }}
+              sx={{ width: 300 }}
+              renderInput={(params) => <TextField {...params} label="Roles" />}
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Autocomplete
+              disablePortal
+              options={StatusList}
+              value={selectedStatusFilterValue}
+              onChange={(event, newValue) => {
+                if (newValue) {
+                  setSelectedStatusFilterValue(newValue);
+                  setSelectedStatusFilter(newValue.id);
+                } else {
+                  setSelectedStatusFilterValue(null);
+                  setSelectedStatusFilter(null);
+                }
+              }}
+              sx={{ width: 300 }}
+              renderInput={(params) => <TextField {...params} label="Status" />}
+            />
+          </Grid>
+        </Grid>
+      </Box>
+      <Box>
         <Button
           variant="outlined"
-          size="small"
           color="secondary"
-          sx={{ mx: 2 }}
-          //   onClick={handleClearFilter}
+          sx={{ color: '#000000', mr: 1 }}
+          onClick={cancelFilter}
         >
           Cancel
         </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          //   disabled={!activate}
-          size="small"
-          //   onClick={handleFilter}
-        >
-          Apply Filters
+        <Button variant="contained" type="submit" onClick={applyFilter}>
+          Apply Filter
         </Button>
-      </Grid>
-    </Grid>
+      </Box>
+    </Box>
   );
 };
 

@@ -1,20 +1,21 @@
-// import Paper from "@mui/material/Paper";
+import InputBase from '@mui/material/InputBase';
+import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
+import { styled, alpha } from '@mui/material';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import PageContainer from 'src/components/container/PageContainer';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+import FilterListIcon from '@mui/icons-material/FilterList';
+import PageContainer from 'src/components/container/PageContainer';
 import { UserTable } from './UserTable';
-// import { UserTableRows } from '@/utils/constants';
 import CustomPagination from 'src/components/tables/CustomPagination';
 import { getUserListing } from './userListingApi';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import BackButton from 'src/components/BackButton';
 import { useSelector } from 'react-redux';
-import { InputBase, Stack, styled, alpha } from '@mui/material';
-import FilterListIcon from '@mui/icons-material/FilterList';
 import Filter from 'src/components/tables/Filters';
 import SearchIcon from '@mui/icons-material/Search';
+import { isEqual } from 'lodash';
 
 const SearchIconWrapper = styled('div')(({ theme }) => ({
   padding: theme.spacing(0, 2),
@@ -25,6 +26,7 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'center',
 }));
+
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: 'black',
   '& .MuiInputBase-input': {
@@ -35,14 +37,13 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     transition: theme.transitions.create('width'),
     marginRight: '5px',
     cursor: 'pointer',
-    [theme.breakpoints.up('sm')]: {
-      width: `${(props) => (props.value !== '' ? 20 : 0)}ch`,
-      '&:focus': {
-        width: '20ch',
-      },
+    '&:focus': {
+      width: '20ch',
     },
+    width: '0ch',
   },
 }));
+
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -56,37 +57,63 @@ const Search = styled('div')(({ theme }) => ({
     marginLeft: theme.spacing(1),
     width: 'auto',
   },
-  ...(props) =>
-    props.value && {
-      '& .MuiInputBase-input': {
-        width: '20ch',
-      },
-    },
 }));
 
 const UsersListing = () => {
-  const populateUsers = useCallback(async () => {
-    getUserListing({ page: 1 });
-  }, []);
+  // ref for fetching data
+  const fetchDataParams = useRef();
+  // filter states
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [selectedRoleFilterValue, setSelectedRoleFilterValue] = useState(null);
+  const [selectedRoleFilter, setSelectedRoleFilter] = useState(null);
+  const [selectedStatusFilterValue, setSelectedStatusFilterValue] = useState(null);
+  const [selectedStatusFilter, setSelectedStatusFilter] = useState(null);
+  // search state
+  const [search, setSearch] = useState('');
+  // pagination and page_range/size states
   const [range, setRange] = useState(10);
+  // get user list from the redux store
+  const userList = useSelector((state) => state.User.userList);
+  // Search Functions
+  const handleApplySearch = (e) => {
+    e.preventDefault();
+    populateUsers({ page: 1, search });
+  };
+  const handleCancelSearch = () => {
+    setSearch('');
+    populateUsers({ page: 1 });
+  };
+
+  // Filter functions
+  const handleApplyFilter = (e) => {
+    e.preventDefault();
+    populateUsers({ page: 1, role: selectedRoleFilter, is_active: selectedStatusFilter });
+  };
+  const handleCancelFilter = () => {
+    setSelectedRoleFilter(null);
+    setSelectedRoleFilterValue(null);
+    setSelectedStatusFilter(null);
+    setSelectedStatusFilterValue(null);
+    setFilterOpen(false);
+    populateUsers({ page: 1 });
+  };
+
+  // User API Callback function
+  const populateUsers = useCallback(async (params) => {
+    if (isEqual(params, fetchDataParams.current)) {
+      return;
+    }
+    fetchDataParams.current = params;
+    getUserListing(params);
+  }, []);
 
   useEffect(() => {
-    populateUsers();
+    populateUsers({ page: 1 });
   }, [populateUsers]);
 
-  const userList = useSelector((state) => state.User.userList);
-  const [filterOpen, setFilterOpen] = useState(false);
-  const [search, setSearch] = useState('');
-  const handleSearch = async () => {
-    await getUserListing({ page: 1, search });
-  };
-  const handleCancle = () => {
-    setSearch('');
-    populateUsers();
-  };
-
   return (
-    <PageContainer title="Global Tekmed - Users" description="this is user listing page">
+    <PageContainer title="Global Tekmed - Users" description="This is the user listing page">
+      {/* Header Section */}
       <Box component="div" display="flex" justifyContent="space-between" alignItems="center">
         <Box component="div">
           <BackButton />
@@ -108,11 +135,14 @@ const UsersListing = () => {
           </Button>
         </Box>
       </Box>
+      {/* End - Header Section */}
+
+      {/* Filters & Search Section */}
       <Box component="div" my={2}>
         {!filterOpen ? (
           <Stack direction="row" justifyContent="space-between">
             <Stack direction="row" justifyContent="start">
-              <Box component="form" onSubmit={handleSearch}>
+              <Box component="form" onSubmit={handleApplySearch}>
                 <Search>
                   <SearchIconWrapper>
                     <SearchIcon />
@@ -120,7 +150,18 @@ const UsersListing = () => {
                   <StyledInputBase
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    inputProps={{ 'aria-label': 'search', value: search }}
+                    inputProps={{ 'aria-label': 'search' }}
+                    sx={
+                      search && {
+                        color: 'black',
+                        '& .MuiInputBase-input': {
+                          width: '20ch',
+                          '&:focus': {
+                            width: '20ch',
+                          },
+                        },
+                      }
+                    }
                   />
                 </Search>
               </Box>
@@ -143,12 +184,12 @@ const UsersListing = () => {
                 <Button
                   variant="outlined"
                   color="secondary"
-                  sx={{ xcolor: '#000000', mr: 1 }}
-                  onClick={handleCancle}
+                  sx={{ color: '#000000', marginRight: 1 }}
+                  onClick={handleCancelSearch}
                 >
                   Cancel
                 </Button>
-                <Button variant="contained" color="primary" onClick={handleSearch}>
+                <Button variant="contained" color="primary" onClick={handleApplySearch}>
                   Search
                 </Button>
               </Stack>
@@ -156,25 +197,24 @@ const UsersListing = () => {
           </Stack>
         ) : (
           <Filter
-          // filterValues={filterValues}
-          // setFilterValues={setFilterValues}
-          // handleFilter={handleFilter}
-          // handleClearFilter={handleClearFilter}
-          // activate={
-          //   filterValues.type ||
-          //   filterValues.plotNo ||
-          //   filterValues.town ||
-          //   filterValues.contact ||
-          //   filterValues.freelancer
-          // }
-          // townDropdownList={townDropdownList}
-          // contactDropdownList={contactDropdownList}
-          // freelancerDropdownList={freelancerDropdownList}
+            selectedRoleFilterValue={selectedRoleFilterValue}
+            selectedStatusFilterValue={selectedStatusFilterValue}
+            setSelectedRoleFilter={setSelectedRoleFilter}
+            setSelectedRoleFilterValue={setSelectedRoleFilterValue}
+            setSelectedStatusFilter={setSelectedStatusFilter}
+            setSelectedStatusFilterValue={setSelectedStatusFilterValue}
+            applyFilter={handleApplyFilter}
+            cancelFilter={handleCancelFilter}
           />
         )}
       </Box>
+      {/* End - Filters & Search Section */}
+
+      {/* Table & Pagination Section */}
       <Box component="div" my={2}>
+        {/* Table */}
         <UserTable rows={userList?.data} />
+        {/* Custom Pagination */}
         {userList && (
           <CustomPagination
             data={userList}
@@ -184,6 +224,7 @@ const UsersListing = () => {
           />
         )}
       </Box>
+      {/* End - Table & Pagination Section */}
     </PageContainer>
   );
 };

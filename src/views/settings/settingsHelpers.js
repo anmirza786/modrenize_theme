@@ -1,7 +1,7 @@
 import axios from '../../utils/axios';
-import { dispatch } from '../../redux/store';
+import { dispatch, getState } from '../../redux/store';
 import { isEmpty } from 'lodash';
-import { setRoleList, setUser } from '../../redux/slices/users';
+import { setRoleList, setUser, setUserRoles } from '../../redux/slices/users';
 import { errorToast, successToast } from '../../components/toasts/index';
 import { localStorageKeys } from 'src/utils/helpers';
 
@@ -29,7 +29,6 @@ export const getUserRoleListing = async (data) => {
 };
 
 export const userUpdate = async (body) => {
-  console.log('body : ', body);
   try {
     const { data } = await axios.put('/auth/update/', body, {
       rawRequest: true,
@@ -49,5 +48,24 @@ export const userUpdate = async (body) => {
   } catch (error) {
     errorToast(error.message);
     return true;
+  }
+};
+export const roleSelectList = async (body) => {
+  if (!getState().User.userRoles) {
+    try {
+      const response = await axios.post(`api/role-listing/`, JSON.stringify(body));
+
+      if (!isEmpty(response?.data) && response?.status === 200) {
+        const resData = response.data.results.map((d) => ({
+          id: d.id,
+          label: d.name,
+          description: d.description,
+        }));
+        dispatch(setUserRoles(resData));
+      }
+    } catch (error) {
+      // message = "something went wrong"
+      console.error(error);
+    }
   }
 };

@@ -1,21 +1,21 @@
-import * as React from "react";
-import Button from "@mui/material/Button";
-import { styled } from "@mui/material/styles";
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import DialogActions from "@mui/material/DialogActions";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import { setIsOpen } from "src/redux/slices/dialogs";
-import { useDispatch, useSelector } from "react-redux";
-import { deleteUser } from "src/views/settings/user-listing/userListingApi";
+import React, { useCallback } from 'react';
+import Button from '@mui/material/Button';
+import { styled } from '@mui/material/styles';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import { useDispatch } from 'react-redux';
+import { deleteUser } from 'src/views/settings/user-listing/userListingApi';
+import { setIsOpen } from 'src/redux/slices/dialogs';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-  "& .MuiDialogContent-root": {
+  '& .MuiDialogContent-root': {
     padding: theme.spacing(2),
   },
-  "& .MuiDialogActions-root": {
+  '& .MuiDialogActions-root': {
     padding: theme.spacing(1),
   },
 }));
@@ -28,7 +28,6 @@ function BootstrapDialogTitle(props) {
       {children}
       {onClose ? (
         <IconButton
-          //   aria-label="close"
           onClick={onClose}
           sx={{
             color: (theme) => theme.palette.grey[500],
@@ -40,23 +39,26 @@ function BootstrapDialogTitle(props) {
     </DialogTitle>
   );
 }
-export default function CustomizedDialogs(props) {
-  const { title, dialogText, buttonText, data } = props;
-  const isOpen = useSelector((state) => state.Dialogs.isOpen);
-  const dispatch = useDispatch();
-  const handleClose = () => {
-    dispatch(setIsOpen(false));
-  };
 
-  const handleConfirmation = async (arg) => {
-    const resp = await new Promise((resolve, reject) => {
-      deleteUser(resolve, arg);
-    });
-    if (resp) {
-      data.api.applyTransaction({ remove: [data.data] });
-      dispatch(setIsOpen(false));
-    }
-  };
+const CustomizedDialogs = ({ title, dialogText, buttonText, data, isOpen }) => {
+  const dispatch = useDispatch();
+
+  const handleClose = useCallback(() => {
+    dispatch(setIsOpen(false));
+  }, [dispatch]);
+
+  const handleConfirmation = useCallback(
+    async (arg) => {
+      const resp = await new Promise((resolve, reject) => {
+        deleteUser(resolve, arg);
+      });
+      if (resp) {
+        data.api.applyTransaction({ remove: [data.data] });
+        dispatch(setIsOpen(false));
+      }
+    },
+    [data.api, data.data, dispatch],
+  );
 
   return (
     <div>
@@ -65,22 +67,14 @@ export default function CustomizedDialogs(props) {
         aria-labelledby="customized-dialog-title"
         open={isOpen}
       >
-        <BootstrapDialogTitle
-          id="customized-dialog-title"
-          onClose={handleClose}
-        >
+        <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
           {title}
         </BootstrapDialogTitle>
         <DialogContent dividers>
           <Typography gutterBottom>{dialogText}</Typography>
         </DialogContent>
         <DialogActions>
-          <Button
-            variant="outlined"
-            color="secondary"
-            autoFocus
-            onClick={handleClose}
-          >
+          <Button variant="outlined" color="secondary" autoFocus onClick={handleClose}>
             Cancel
           </Button>
           <Button
@@ -95,4 +89,6 @@ export default function CustomizedDialogs(props) {
       </BootstrapDialog>
     </div>
   );
-}
+};
+
+export default CustomizedDialogs;
