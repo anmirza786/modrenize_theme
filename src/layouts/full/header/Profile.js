@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   Avatar,
   Box,
@@ -8,22 +8,36 @@ import {
   IconButton,
   MenuItem,
   ListItemIcon,
-  ListItemText
+  ListItemText,
+  Typography,
 } from '@mui/material';
-
-import { IconListCheck, IconMail, IconUser } from '@tabler/icons';
-
-import ProfileImg from 'src/assets/images/profile/user-1.jpg';
+import { IconUser } from '@tabler/icons';
+import { logout } from 'src/views/authentication/AuthHelpers';
+import { localStorageKeys } from 'src/utils/helpers';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { useSelector } from 'react-redux';
 
 const Profile = () => {
+  const navigate = useNavigate();
   const [anchorEl2, setAnchorEl2] = useState(null);
+  const [user, setUser] = useState(null);
   const handleClick2 = (event) => {
     setAnchorEl2(event.currentTarget);
   };
   const handleClose2 = () => {
     setAnchorEl2(null);
   };
-
+  const handleLogout = async () => {
+    const response = await logout();
+    if (response) {
+      navigate('/auth/login');
+    }
+  };
+  const userData = useSelector((state) => state.User.user);
+  useEffect(() => {
+    const newUser = JSON.parse(localStorage.getItem(localStorageKeys.userObj));
+    setUser(newUser);
+  }, [userData]);
   return (
     <Box>
       <IconButton
@@ -32,21 +46,30 @@ const Profile = () => {
         color="inherit"
         aria-controls="msgs-menu"
         aria-haspopup="true"
-        sx={{
-          ...(typeof anchorEl2 === 'object' && {
-            color: 'primary.main',
-          }),
-        }}
+        // sx={{
+        //   ...(typeof anchorEl2 === 'object' && {
+        //     color: 'primary.main',
+        //   }),
+        // }}
+        disableRipple
         onClick={handleClick2}
       >
-        <Avatar
-          src={ProfileImg}
-          alt={ProfileImg}
-          sx={{
-            width: 35,
-            height: 35,
-          }}
-        />
+        {user && (
+          <>
+            <Avatar
+              src={`${user?.avatar}`}
+              alt={user.first_name}
+              sx={{
+                width: 35,
+                height: 35,
+              }}
+            />
+            <Typography variant="body1" sx={{ color: '#000000', ml: 1 }}>
+              {user.first_name ?? 'Profile'}
+            </Typography>
+            <KeyboardArrowDownIcon />
+          </>
+        )}
       </IconButton>
       {/* ------------------------------------------- */}
       {/* Message Dropdown */}
@@ -65,13 +88,13 @@ const Profile = () => {
           },
         }}
       >
-        <MenuItem>
+        <MenuItem component={Link} to="/">
           <ListItemIcon>
             <IconUser width={20} />
           </ListItemIcon>
           <ListItemText>My Profile</ListItemText>
         </MenuItem>
-        <MenuItem>
+        {/* <MenuItem>
           <ListItemIcon>
             <IconMail width={20} />
           </ListItemIcon>
@@ -82,9 +105,9 @@ const Profile = () => {
             <IconListCheck width={20} />
           </ListItemIcon>
           <ListItemText>My Tasks</ListItemText>
-        </MenuItem>
+        </MenuItem> */}
         <Box mt={1} py={1} px={2}>
-          <Button to="/auth/login" variant="outlined" color="primary" component={Link} fullWidth>
+          <Button onClick={handleLogout} variant="outlined" color="primary" fullWidth>
             Logout
           </Button>
         </Box>

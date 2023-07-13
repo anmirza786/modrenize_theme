@@ -1,0 +1,26 @@
+.ag-theme-alpine .ag-root-wrapper {
+  border: none;
+}
+
+/* Header styling */
+.ag-theme-alpine .ag-header {
+  background-color: #f2f2f2;
+  font-weight: bold;
+  height: 70px;
+}
+
+.ag-theme-alpine .ag-header-cell {
+  border: none;
+}
+
+/* Cell styling */
+.ag-theme-alpine .ag-cell {
+  text-align: left;
+  line-height: 70px; /* Adjust the desired height value */
+}
+.ag-theme-alpine .ag-row {
+  min-height: 70px;
+}
+.ag-theme-alpine .ag-cell-value {
+  color: #333;
+}
