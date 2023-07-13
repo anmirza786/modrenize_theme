@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef } from 'react';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
@@ -9,10 +9,9 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { setImageDialog } from 'src/redux/slices/dialogs';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteUser } from 'src/views/settings/user-listing/userListingApi';
-import ReactCrop from 'react-image-crop';
-import 'react-image-crop/dist/ReactCrop.css';
 import { Box } from '@mui/system';
+import { Cropper } from 'react-advanced-cropper';
+import 'react-advanced-cropper/dist/style.css';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -44,56 +43,19 @@ function BootstrapDialogTitle(props) {
   );
 }
 export default function CustomizedDialogs(props) {
-  const { imageToCrop, croppedImage,inputFile, data } = props;
-  const [crop, setCrop] = useState({
-    maxHeight: 800,
-    maxWidth: 400,
-  });
-  const [image, setImage] = useState(null);
-  const cropImageNow = () => {
-    const canvas = document.createElement("canvas");
-    const scaleX = image.naturalWidth / image.width;
-    const scaleY = image.naturalHeight / image.height;
-    canvas.width = crop.width;
-    canvas.height = crop.height;
-    const ctx = canvas.getContext("2d");
+  const { imageToCrop, croppedImage, inputFile } = props;
 
-    const pixelRatio = window.devicePixelRatio;
-    canvas.width = crop.width * pixelRatio;
-    canvas.height = crop.height * pixelRatio;
-    ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-    ctx.imageSmoothingQuality = "high";
+  const cropperRef = useRef(null);
 
-    ctx.drawImage(
-      image,
-      image.crossOrigin = 'anonymous',
-      crop.x * scaleX,
-      crop.y * scaleY,
-      crop.width * scaleX,
-      crop.height * scaleY,
-      0,
-      0,
-      crop.width,
-      crop.height,
-    );
-    var base64Image
-    console.log(canvas)
-    
-
-    //  new Promise((reject, resolve) => {
-       
-    //    resolve(
-        base64Image = canvas.toDataURL("image1/*")
-      // });
-    // const blob = new Blob(base64Image);
-    var url = base64Image;
-
-    console.log("you are El : ", url)
-
-    // fetch(url)
-    //   .then((res) => res.blob())
-    //   .then(console.log);
-    // croppedImage(base64Image);
+  const onCrop = () => {
+    const cropper = cropperRef.current;
+    if (cropper) {
+      const canvas = cropper.getCanvas();
+      if (canvas) {
+        croppedImage(canvas.toDataURL());
+        dispatch(setImageDialog(false))
+      }
+    }
   };
 
   const isOpen = useSelector((state) => state.Dialogs.imageDialog);
@@ -101,16 +63,6 @@ export default function CustomizedDialogs(props) {
   const dispatch = useDispatch();
   const handleClose = () => {
     dispatch(setImageDialog(false));
-  };
-
-  const handleConfirmation = async (arg) => {
-    const resp = await new Promise((resolve, reject) => {
-      deleteUser(resolve, arg);
-    });
-    if (resp) {
-      data.api.applyTransaction({ remove: [data.data] });
-      dispatch(setImageDialog(false));
-    }
   };
 
   return (
@@ -127,16 +79,15 @@ export default function CustomizedDialogs(props) {
           <Typography gutterBottom>Image Dialog</Typography>
           <Box component="div">
             {imageToCrop && (
-              <Box component="div">
-                <ReactCrop
-                  src={imageToCrop}
-                  onImageLoaded={setImage}
-                  maxHeight={400}
-                  maxWidth={400}
-                  crop={crop}
-                  onChange={setCrop}
-                />
-                {/* <img src={imageToCrop} alt='img' /></ReactCrop> */}
+              <Box component="div" className="example">
+                <Box omponent="div" className="example__cropper-wrapper">
+                  <Cropper
+                    ref={cropperRef}
+                    className="example__cropper"
+                    backgroundClassName="example__cropper-background"
+                    src={imageToCrop}
+                  />
+                </Box>
                 <br />
               </Box>
             )}
@@ -146,17 +97,13 @@ export default function CustomizedDialogs(props) {
           <Button variant="outlined" color="secondary" onClick={handleClose}>
             Cancel
           </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={cropImageNow}
-          >
+          <Button variant="contained" color="primary" onClick={onCrop}>
             Crop
           </Button>
           <Button
             variant="contained"
             color="primary"
-                onClick={() => inputFile.current.click()}
+            onClick={() => inputFile.current.click()}
             // onClick={() => handleConfirmation(data.data.id)}
           >
             Upload

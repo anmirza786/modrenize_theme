@@ -14,7 +14,6 @@ import {
 import { jsonMomoa, userUpdate } from '../settingsHelpers';
 import { MuiTelInput } from 'mui-tel-input';
 import { Avatar, Badge } from '@mui/material';
-// import { useRouter } from "next/navigation";
 import PageContainer from 'src/components/container/PageContainer';
 import ImageCropper from 'src/components/dialogs/ImageCropper';
 import { useDispatch } from 'react-redux';
@@ -39,7 +38,6 @@ const AccountSettings = () => {
   const [profileImageBlob, setProfileImageBlob] = useState(null);
 
   const inputFile = useRef(null);
-  // const router = useRouter();
 
   useEffect(() => {
     initializeUser();
@@ -66,6 +64,7 @@ const AccountSettings = () => {
     console.log('e.target.files[0] : ', e.target.files);
     setProfileImage(URL.createObjectURL(e.target.files[0]));
     setProfileImageBlob(e.target.files);
+    // setImageToCrop(URL.createObjectURL(e.target.files[0]))
   };
 
   const handleSubmit = async (event) => {
@@ -130,7 +129,7 @@ const AccountSettings = () => {
     }
   };
 
-  console.log("profileImage : ", profileImage)
+  console.log('profileImage : ', profileImage);
 
   return (
     <PageContainer title="Global Tekmed - Update User" description="this is user settings page">
@@ -312,7 +311,11 @@ const AccountSettings = () => {
           </Grid>
         </Box>
       </Box>
-      <ImageCropper imageToCrop={profileImage} inputFile={inputFile} croppedImage={setProfileImage}/>
+      <ImageCropper
+        imageToCrop={profileImage}
+        inputFile={inputFile}
+        croppedImage={setProfileImage}
+      />
     </PageContainer>
   );
 };
