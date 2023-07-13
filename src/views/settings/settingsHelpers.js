@@ -4,7 +4,6 @@ import { isEmpty } from 'lodash';
 import { setRoleList } from '../../redux/slices/users';
 import { errorToast, successToast } from '../../components/toasts/index';
 
-
 export const getUserRoleListing = async (data) => {
   const response = await axios.post(`api/role-listing/?page=${data.page}`, {
     page_size: data.page_size ?? 10,
@@ -29,7 +28,6 @@ export const getUserRoleListing = async (data) => {
 };
 
 export const userUpdate = async (body) => {
-  console.log('body : ', body)
   try {
     const { data } = await axios.put('/auth/update/', body, {
       rawRequest: true,
@@ -53,4 +51,4 @@ export const userUpdate = async (body) => {
 
 export const jsonMomoa = (momo) => {
   return JSON.parse(momo);
-}
+};

@@ -36,6 +36,7 @@ const AccountSettings = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [profileImage, setProfileImage] = useState(null);
   const [profileImageBlob, setProfileImageBlob] = useState(null);
+  const [croppedImage, setCroppedImage] = useState(null);
 
   const inputFile = useRef(null);
 
@@ -47,7 +48,6 @@ const AccountSettings = () => {
     const storedUser = window.localStorage.getItem('CRM3User');
     // const storedUser = JSON.parse(localStorage.getItem(localStorageKeys.userObj))
     if (storedUser) {
-      console.log('stored user : ', storedUser);
       const u = jsonMomoa(storedUser);
       // JSON.parse(storedUser);
       setUser(u);
@@ -61,12 +61,9 @@ const AccountSettings = () => {
   };
 
   const handleImageUpload = (e) => {
-    console.log('e.target.files[0] : ', e.target.files);
     setProfileImage(URL.createObjectURL(e.target.files[0]));
     setProfileImageBlob(e.target.files);
-    // setImageToCrop(URL.createObjectURL(e.target.files[0]))
   };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -111,9 +108,12 @@ const AccountSettings = () => {
       // body.address = address;
     }
 
-    if (profileImageBlob) {
-      formData.append('avatar', profileImageBlob[0]);
-      // body.profileImage = profileImage
+    if (profileImageBlob || croppedImage) {
+      if (!profileImageBlob) {
+        formData.append('avatar', croppedImage);
+      } else {
+        formData.append('avatar', profileImageBlob[0]);
+      }
     }
 
     const body = formData;
@@ -128,8 +128,6 @@ const AccountSettings = () => {
       setIsLoading(false);
     }
   };
-
-  console.log('profileImage : ', profileImage);
 
   return (
     <PageContainer title="Global Tekmed - Update User" description="this is user settings page">
@@ -313,8 +311,9 @@ const AccountSettings = () => {
       </Box>
       <ImageCropper
         imageToCrop={profileImage}
+        setProfileImage={setProfileImage}
         inputFile={inputFile}
-        croppedImage={setProfileImage}
+        croppedImage={setCroppedImage}
       />
     </PageContainer>
   );

@@ -43,7 +43,7 @@ function BootstrapDialogTitle(props) {
   );
 }
 export default function CustomizedDialogs(props) {
-  const { imageToCrop, croppedImage, inputFile } = props;
+  const { imageToCrop, croppedImage, inputFile, setProfileImage } = props;
 
   const cropperRef = useRef(null);
 
@@ -52,14 +52,21 @@ export default function CustomizedDialogs(props) {
     if (cropper) {
       const canvas = cropper.getCanvas();
       if (canvas) {
-        croppedImage(canvas.toDataURL());
-        dispatch(setImageDialog(false))
+        let file;
+        const url = canvas.toDataURL();
+        setProfileImage(url);
+        fetch(url)
+          .then((res) => res.blob())
+          .then((blob) => {
+            file = new File([blob], 'File name', { type: 'image/png' });
+            croppedImage(file);
+          });
+        dispatch(setImageDialog(false));
       }
     }
   };
 
   const isOpen = useSelector((state) => state.Dialogs.imageDialog);
-  console.log('image dialog state : ', isOpen);
   const dispatch = useDispatch();
   const handleClose = () => {
     dispatch(setImageDialog(false));
@@ -73,7 +80,7 @@ export default function CustomizedDialogs(props) {
         open={isOpen}
       >
         <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
-          crop or upload new image
+          Crop or upload new image
         </BootstrapDialogTitle>
         <DialogContent dividers>
           <Typography gutterBottom>Image Dialog</Typography>
@@ -100,13 +107,16 @@ export default function CustomizedDialogs(props) {
           <Button variant="contained" color="primary" onClick={onCrop}>
             Crop
           </Button>
+          <Button variant="contained" color="primary" onClick={handleClose}>
+            Continue Without Cropping
+          </Button>
           <Button
             variant="contained"
             color="primary"
             onClick={() => inputFile.current.click()}
             // onClick={() => handleConfirmation(data.data.id)}
           >
-            Upload
+            Browse Image
           </Button>
         </DialogActions>
       </BootstrapDialog>
