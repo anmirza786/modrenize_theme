@@ -9,7 +9,6 @@ import NavigateNextOutlinedIcon from '@mui/icons-material/NavigateNextOutlined';
 import { Box, Divider } from '@mui/material';
 import PageContainer from 'src/components/container/PageContainer';
 import { localStorageKeys } from 'src/utils/helpers';
-// import BackButton from 'src/components/BackButton';
 
 const Settings = () => {
   const [user, setUser] = useState(null);

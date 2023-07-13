@@ -1,7 +1,5 @@
-import InputBase from '@mui/material/InputBase';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
-import { styled, alpha } from '@mui/material';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';

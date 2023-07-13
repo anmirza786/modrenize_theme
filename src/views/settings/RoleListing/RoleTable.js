@@ -19,11 +19,6 @@ export const RoleTable = ({ rows }) => {
     minWidth: 100,
     sortable: true,
     resizable: true,
-    // suppressMenu: false,
-    // cellStyle: () => ({
-    //   whiteSpace: 'pre-wrap',
-    //   wordBreak: 'break-word',
-    // }),
   };
   const frameworkComponents = {
     ActionButtons,
@@ -37,7 +32,6 @@ export const RoleTable = ({ rows }) => {
         defaultColDef={defaultColDef}
         columnDefs={rolesTableColumnDefs}
         components={frameworkComponents}
-        // suppressScrollOnNewData={true}
       ></AgGridReact>
     </div>
   );

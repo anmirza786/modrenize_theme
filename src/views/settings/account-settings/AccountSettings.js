@@ -14,7 +14,6 @@ import {
 import { userUpdate } from '../settingsHelpers';
 import { MuiTelInput } from 'mui-tel-input';
 import { Avatar, Badge } from '@mui/material';
-// import { useRouter } from "next/navigation";
 import PageContainer from 'src/components/container/PageContainer';
 import { localStorageKeys } from 'src/utils/helpers';
 
@@ -34,16 +33,9 @@ const AccountSettings = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [profileImage, setProfileImage] = useState(null);
   const [profileImageBlob, setProfileImageBlob] = useState(null);
-
   const inputFile = useRef(null);
-  // const router = useRouter();
-
-  useEffect(() => {
-    initializeUser();
-  }, []);
 
   const initializeUser = () => {
-    // const storedUser = window.localStorage.getItem("CRM3User");
     const storedUser = localStorage.getItem(localStorageKeys.userObj);
     if (storedUser) {
       console.log('stored user : ', storedUser);
@@ -66,7 +58,6 @@ const AccountSettings = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     if (password1 && (password1.length < 8 || password1 !== password2)) {
       errorToast(
         password1.length < 8
@@ -75,48 +66,34 @@ const AccountSettings = () => {
       );
       return;
     }
-
     const body1 = {
       first_name: firstname,
       last_name: lastname,
       email: email,
     };
-
     if (!password1) {
       if (isEqual(body1, user)) {
         return;
       }
     }
-
     const formData = new FormData();
     formData.append('first_name', firstname);
     formData.append('last_name', lastname);
     formData.append('email', email);
-
     if (password1) {
-      // body.password = password1;
       formData.append('password', password1);
     }
-
     if (phone) {
       formData.append('phone', phone);
-      // body.phone = phone;
     }
-
     if (address) {
       formData.append('address', address);
-      // body.address = address;
     }
-
     if (profileImageBlob) {
       formData.append('avatar', profileImageBlob[0]);
-      // body.profileImage = profileImage
     }
-
     const body = formData;
-
     setIsLoading(true);
-
     try {
       await userUpdate(body);
     } catch (error) {
@@ -125,6 +102,10 @@ const AccountSettings = () => {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    initializeUser();
+  }, []);
 
   return (
     <PageContainer title="Global Tekmed - Update User" description="this is user settings page">

@@ -1,5 +1,3 @@
-'use client';
-// import Paper from "@mui/material/Paper";
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import PageContainer from 'src/components/container/PageContainer';
@@ -8,7 +6,6 @@ import { RoleTable } from './RoleTable';
 import BackButton from 'src/components/BackButton';
 import { useCallback, useEffect, useState } from 'react';
 import { getUserRoleListing } from '../settingsHelpers';
-// import { useAppSelector } from 'src/redux/store';
 import { useSelector } from 'react-redux';
 
 const RoleListing = () => {
@@ -32,18 +29,6 @@ const RoleListing = () => {
             All the roles who have different permissions
           </Typography>
         </Box>
-        {/* <Box component="div">
-          <Button
-            size="large"
-            component="a"
-            href="/"
-            color="primary"
-            variant="contained"
-            startIcon={<AddOutlinedIcon />}
-          >
-            Add Role
-          </Button>
-        </Box> */}
       </Box>
       <Box component="div">
         <RoleTable rows={roleList?.data} />

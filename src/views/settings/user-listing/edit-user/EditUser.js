@@ -24,12 +24,31 @@ const EditUser = () => {
   const [email, setEmail] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [loading, setLoading] = useState(false);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const user = queryParams.get('userId');
   const navigate = useNavigate();
-  const userId = parseInt(user ?? '1');
+  const userId = parseInt(user);
+
+  const roleList = useSelector((state) => state.User.userRoles);
+
+  const loading = useSelector((state) => state.User.loading);
+
+  const handlesubmit = async (event) => {
+    event.preventDefault();
+    const formBody = {
+      email: event.target.email.value,
+      first_name: event.target.firstname.value,
+      last_name: event.target.lastname.value,
+      role: roleId,
+      is_active: active,
+    };
+    const response = await updateUser(formBody, userId);
+    if (response) {
+      navigate(-1);
+    }
+  };
+
   const populateUserRoles = useCallback(async () => {
     const body = {
       page_size: 100,
@@ -38,11 +57,6 @@ const EditUser = () => {
     await roleSelectList(body);
   }, []);
 
-  useEffect(() => {
-    populateUserRoles();
-  }, [populateUserRoles]);
-
-  const roleList = useSelector((state) => state.User.userRoles);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -54,34 +68,14 @@ const EditUser = () => {
         setRoleValue(singleUserData.role.name);
         setRoleId(singleUserData.role.id);
       } catch (error) {
-        // Handle error
         console.log(error);
       }
     };
 
     fetchData();
+    populateUserRoles();
   }, [roleList, userId]);
 
-  const handlesubmit = async (event) => {
-    event.preventDefault();
-    const formBody = {
-      email: event.target.email.value,
-      first_name: event.target.firstname.value,
-      last_name: event.target.lastname.value,
-      role: roleId,
-      is_active: active,
-    };
-    setLoading(true);
-    try {
-      const response = await updateUser(formBody, userId);
-      if (response) {
-        navigate(-1);
-      }
-    } catch (e) {
-    } finally {
-      setLoading(false);
-    }
-  };
   return (
     <PageContainer title="Global Tekmed - Users" description="this is user listing page">
       <Box component="form" id="createUser" onSubmit={handlesubmit}>

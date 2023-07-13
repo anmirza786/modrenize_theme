@@ -11,10 +11,7 @@ import {
   ListItemText,
   Typography,
 } from '@mui/material';
-
 import { IconUser } from '@tabler/icons';
-
-import ProfileImg from 'src/assets/images/profile/user-1.jpg';
 import { logout } from 'src/views/authentication/AuthHelpers';
 import { localStorageKeys } from 'src/utils/helpers';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';

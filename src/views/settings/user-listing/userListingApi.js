@@ -2,7 +2,6 @@ import axios from 'src/utils/axios';
 import { dispatch } from 'src/redux/store';
 import { isEmpty } from 'lodash';
 import { setLoading, setUserList } from 'src/redux/slices/users';
-import { toast } from 'react-hot-toast';
 import { errorToast, successToast } from 'src/components/toasts';
 
 export const getUserListing = async (data) => {

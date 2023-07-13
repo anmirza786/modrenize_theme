@@ -16,26 +16,19 @@ import {
 import { errorToast } from '../../../../components/toasts/index';
 import { useSelector } from 'react-redux';
 import { roleSelectList } from '../../settingsHelpers';
+import { useNavigate } from 'react-router';
 
 const UsersListing = () => {
   const [roleValue, setRoleValue] = useState(null);
   const [roleId, setRoleId] = useState(null);
   const [active, setActive] = useState(true);
-  const [loading, setLoading] = useState(false);
-  // const router = useRouter();
 
-  const populateUserRoles = useCallback(async () => {
-    const body = {
-      page_size: 500,
-    };
-    await roleSelectList(body);
-  }, []);
-
-  useEffect(() => {
-    populateUserRoles();
-  }, [populateUserRoles]);
+  const loading = useSelector((state) => state.User.loading);
 
   const roleList = useSelector((state) => state.User.userRoles);
+
+  const navigate = useNavigate();
+
   const handlesubmit = async (event) => {
     event.preventDefault();
     const formBody = {
@@ -48,11 +41,9 @@ const UsersListing = () => {
     };
     const password2 = event.target.password2.value;
     if (formBody.password.length >= 8 && formBody.password === password2) {
-      setLoading(true);
       const response = await createUser(formBody);
       if (response) {
-        // router.back();
-        setLoading(false);
+        navigate(-1);
       }
     } else if (formBody.password.length < 8) {
       errorToast('Password must be of 8 characters');
@@ -60,6 +51,17 @@ const UsersListing = () => {
       errorToast('Passwords do not match');
     }
   };
+  const populateUserRoles = useCallback(async () => {
+    const body = {
+      page_size: 500,
+    };
+    await roleSelectList(body);
+  }, []);
+
+  useEffect(() => {
+    populateUserRoles();
+  }, [populateUserRoles]);
+
   return (
     <PageContainer title="Global Tekmed - Users" description="this is user listing page">
       <Box component="form" id="createUser" onSubmit={handlesubmit}>
@@ -75,10 +77,9 @@ const UsersListing = () => {
               color="secondary"
               variant="outlined"
               disabled={loading}
-              // onClick={() => router.back()}
               sx={{ mr: 2, fontWeight: '700', color: '#000000' }}
             >
-              Cancel
+              Clear Form
             </Button>
             <Button
               size="large"

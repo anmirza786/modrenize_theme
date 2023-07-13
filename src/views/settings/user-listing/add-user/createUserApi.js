@@ -12,15 +12,16 @@ export const createUser = async (body) => {
     } else {
       if (data.errors) {
         data.errors.map((error) => errorToast(error));
+        return true;
       } else {
         errorToast(data.message);
+        return false;
       }
     }
   } catch (error) {
     errorToast(error.message);
-    console.error(error);
+    return false;
   } finally {
     dispatch(setLoading(false));
-    return true;
   }
 };
