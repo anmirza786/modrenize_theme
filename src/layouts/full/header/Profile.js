@@ -108,7 +108,7 @@ const Profile = () => {
         </MenuItem> */}
         <Box mt={1} py={1} px={2}>
           <Button onClick={handleLogout} variant="outlined" color="primary" fullWidth>
-            Logout
+            Sign Out
           </Button>
         </Box>
       </Menu>

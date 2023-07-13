@@ -69,8 +69,8 @@ const Sidebar = (props) => {
                 component="img"
                 src="/logoutIcon.svg"
                 alt="logout"
-                height={15.6}
-                width={15.6}
+                height={20.8}
+                width={20.8}
                 style={{
                   marginTop: '2px',
                 }}
@@ -79,13 +79,14 @@ const Sidebar = (props) => {
                 variant="h6"
                 component="h6"
                 sx={{
-                  color: '#8E8EA9',
+                  color: '#5a6a85',
                   mt: '2px',
-                  ml: '4px',
+                  ml: '20px',
                   cursor: 'pointer',
+                  fontWeight: '400',
                 }}
               >
-                Logout
+                Sign Out
               </Typography>
             </Box>
           </Box>

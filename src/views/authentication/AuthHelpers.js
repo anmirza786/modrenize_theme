@@ -29,7 +29,7 @@ export const confirmOTP = async (body) => {
       dispatch(setUser(data.user));
       localStorage.setItem(localStorageKeys.authToken, data.token);
       localStorage.setItem(localStorageKeys.userObj, JSON.stringify(data.user));
-      successToast(data.message);
+      // successToast(data.message);
       return true;
     } else {
       errorToast(data.message);
@@ -46,10 +46,10 @@ export const logout = async () => {
     await axios.post('/auth/logout/');
     localStorage.removeItem(localStorageKeys.authToken);
     localStorage.removeItem(localStorageKeys.userObj);
-    successToast('Logout Successful');
+    // successToast('Logout Successful');
     return true;
   } catch (error) {
-    errorToast(error.message);
+    // errorToast(error.message);
     localStorage.removeItem(localStorageKeys.authToken);
     localStorage.removeItem(localStorageKeys.userObj);
     return false;
